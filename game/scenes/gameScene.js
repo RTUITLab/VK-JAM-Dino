@@ -1,12 +1,18 @@
+import { normalise, tick } from '../../helpers/seed'
 import { Player } from '../player'
+import { Empty } from '../sprites/empty'
+import { Evgeny } from '../sprites/evgeny'
 import { Ground } from '../sprites/mapParts'
 import { Obstacle } from '../sprites/obstacle'
 import { PowerUp } from '../sprites/powerup'
+
 export class GameScene extends Phaser.Scene {
+	seed
 	bgtile
 	cursors
 	player
 	globalSpeed
+	globalDistance
 	globalScore
 	ground
 	obstacleCounter
@@ -15,6 +21,8 @@ export class GameScene extends Phaser.Scene {
 		this.obstacleCounter = 0
 		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
 		this.globalScore = 0
+		this.globalDistance = 500
+		this.seed = '9a7f' // random hex lenght 5
 	}
 
 	preload() {
@@ -72,7 +80,7 @@ export class GameScene extends Phaser.Scene {
 			repeat: -1,
 		})
 
-		this.nextObstacleDistance = 200 //Phaser.Math.Between(300, 620) //200min
+		this.nextObstacleDistance = this.globalDistance //Phaser.Math.Between(300, 620) //200min
 	}
 
 	update(time, delta) {
@@ -121,19 +129,35 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	addObstacle() {
-		if (this.obstacleCounter < 2) {
-			let obstacle = new Obstacle(this)
-			obstacle.active = true
-			obstacle.visible = true
-			this.obstaclesPool.add(obstacle)
-			this.obstacleCounter++
-		} else {
-			let powerup = new PowerUp(this)
-			powerup.active = true
-			powerup.visible = true
-			this.obstaclesPool.add(powerup)
-			this.obstacleCounter = 0
+		let nextObject = normalise(this.seed)
+		switch (nextObject) {
+			case 'empty':
+				let empty = new Empty(this)
+				empty.active = true
+				empty.visible = true
+				this.obstaclesPool.add(empty)
+				break
+			case 'evgeny':
+				let evgeny = new Evgeny(this)
+				evgeny.active = true
+				evgeny.visible = true
+				this.obstaclesPool.add(evgeny)
+				break
+			case 'obstacle':
+				let obstacle = new Obstacle(this)
+				obstacle.active = true
+				obstacle.visible = true
+				this.obstaclesPool.add(obstacle)
+				break
+			case 'powerup':
+				let powerup = new PowerUp(this)
+				powerup.active = true
+				powerup.visible = true
+				this.obstaclesPool.add(powerup)
+				break
 		}
-		this.nextObstacleDistance = Phaser.Math.Between(300, 620) //200min
+		this.nextObstacleDistance = this.globalDistance //200min
+		let nextTick = tick(this.seed)
+		this.seed = nextTick
 	}
 }
