@@ -160,4 +160,8 @@ export class GameScene extends Phaser.Scene {
 		let nextTick = tick(this.seed)
 		this.seed = nextTick
 	}
+
+	restartGame() {
+		this.scene.restart()
+	}
 }

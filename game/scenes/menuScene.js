@@ -101,6 +101,7 @@ export class MenuScene extends Phaser.Scene {
 			.setInteractive()
 			.on('pointerdown', () => {
 				this.scene.start('GameScene', { level: 1 })
+				this.scene.sleep('MenuScene')
 			})
 
 		const shopButton = this.add

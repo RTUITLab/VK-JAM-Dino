@@ -26,8 +26,6 @@ var config = {
 	scale: {
 		mode: Phaser.Scale.ScaleModes.SHOW_ALL,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
-		width: window.innerWidth * window.devicePixelRatio,
-		height: window.innerHeight * window.devicePixelRatio,
 	},
 	pixelArt: true, //remove
 	scene: [MenuScene, GameScene, GameUIScene, ShopScene, GameOverScene],

@@ -16,7 +16,7 @@ export class GameUIScene extends Phaser.Scene {
 		gameScene.events.on(
 			'addScore',
 			function () {
-				info.setText('Score: ' + parseInt(this.globalScore / 10))
+				info.setText('Score: ' + parseInt(this.globalScore / 10 || 0))
 			},
 			gameScene
 		)

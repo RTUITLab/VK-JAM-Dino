@@ -22,7 +22,6 @@ export class Obstacle extends Phaser.Physics.Arcade.Sprite {
 	gameOver() {
 		// this.scene.scene.player.destroy() //TODO: remove double player
 		// this.scene.restart()
-		this.scene.launch('GameOverScene')
-		this.scene.pause()
+		this.scene.start('GameOverScene')
 	}
 }
