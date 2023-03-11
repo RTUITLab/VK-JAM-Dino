@@ -6,6 +6,7 @@ export class MenuScene extends Phaser.Scene {
 
 	preload() {
 		this.load.image('background', 'https://labs.phaser.io/assets/skies/space1.png')
+		this.load.html('hi', '../../html/startGame.html')
 		this.load.css('80s', 'https://labs.phaser.io/assets/loader-tests/80stypography.css')
 	}
 
@@ -29,15 +30,18 @@ export class MenuScene extends Phaser.Scene {
 			.dom(200, 200, 'h1', { height: '200px', width: '200px', color: 'white', fontSize: '40px' }, 'В забег!')
 			.setClassName('chrome')
 
-		const test = this.add
-			.dom(
-				100,
-				100,
-				'div',
-				'background-color: rgba(255, 255, 0, 0.5); width: 300px; height: 200px; font: 48px Arial; font-weight: bold',
-				'hellelelel'
-			)
-			.setOrigin(0)
+		const test = this.add.dom(
+			100,
+			100,
+			'div',
+			'background-color: rgba(255, 255, 0, 0.5); width: 300px; height: 200px; font: 48px Arial; font-weight: bold',
+			'hellelelel'
+		)
+		test.node.style.width = '200px' // set the width of the element
+		test.node.style.height = '100px' // set the height of the element
+		test.setOrigin(0.5)
+		test.setScale(2)
+		test.setDepth(10)
 
 		console.log(test)
 
@@ -59,6 +63,15 @@ export class MenuScene extends Phaser.Scene {
 			loop: -1,
 			yoyo: true,
 		})
+
+		// var element = this.add.dom(10, 10).createFromCache('hi')
+		// element.node.style.width = '200px' // set the width of the element
+		// element.node.style.height = '100px' // set the height of the element
+		// element.setOrigin(0.5)
+		// element.setScale(2)
+		// element.setDepth(10)
+		// // element.updatePosition(-element.width / 2, -element.height / 2)
+		// console.log(element)
 
 		//playButton.setClassName('chrome') //.setDepth(10)
 		// this.tweens.add({
@@ -83,6 +96,12 @@ export class MenuScene extends Phaser.Scene {
 		// 	playButtonBounds.width + playButtonPadding * 2 + playButtonBorderWidth,
 		// 	playButtonBounds.height + playButtonPadding * 2 + playButtonBorderWidth
 		// )
+		const playButtonOld = this.add
+			.text(width * 0.2, height * 0.3, 'В забег!', { fontSize: '5em', fill: '#fff' })
+			.setInteractive()
+			.on('pointerdown', () => {
+				this.scene.start('GameScene', { level: 1 })
+			})
 
 		const shopButton = this.add
 			.text(width * 0.2, height * 0.45, 'В магазин', { fontSize: '4em', fill: '#fff' })

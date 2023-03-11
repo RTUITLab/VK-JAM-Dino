@@ -32,6 +32,7 @@ export class GameOverScene extends Phaser.Scene {
 			.setDepth(11)
 			.setInteractive()
 			.on('pointerup', () => {
+				this.scene.pause()
 				this.scene.start('GameScene')
 			})
 

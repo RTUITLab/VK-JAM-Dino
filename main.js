@@ -9,6 +9,9 @@ bridge.send('VKWebAppInit', {})
 
 var config = {
 	type: Phaser.AUTO,
+	dom: {
+		createContainer: true,
+	},
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -25,9 +28,6 @@ var config = {
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 		width: window.innerWidth * window.devicePixelRatio,
 		height: window.innerHeight * window.devicePixelRatio,
-	},
-	dom: {
-		createContainer: true,
 	},
 	pixelArt: true, //remove
 	scene: [MenuScene, GameScene, GameUIScene, ShopScene, GameOverScene],
