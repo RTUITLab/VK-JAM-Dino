@@ -1,14 +1,20 @@
 import { Player } from '../player'
 import { Ground } from '../sprites/mapParts'
 import { Obstacle } from '../sprites/obstacle'
+import { PowerUp } from '../sprites/powerup'
 export class GameScene extends Phaser.Scene {
 	bgtile
 	cursors
 	player
-	speed
+	globalSpeed
+	globalScore
 	ground
+	obstacleCounter
 	constructor() {
-		super({ key: 'GameScene', active: false, visible: false })
+		super({ key: 'GameScene' })
+		this.obstacleCounter = 0
+		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
+		this.globalScore = 0
 	}
 
 	preload() {
@@ -17,6 +23,12 @@ export class GameScene extends Phaser.Scene {
 			'https://sun1-27.userapi.com/impg/E2BDZkKljxgMQgv11GiarjqOLMrBUJZtLhTJbQ/agILbMu9EgI.jpg?size=1280x761&quality=96&sign=290343c52af9f376b605d78f06fa6041&type=album'
 		)
 		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
+		this.load.atlas(
+			'gems',
+			'https://labs.phaser.io/assets/tests/columns/gems.png',
+			'https://labs.phaser.io/assets/tests/columns/gems.json'
+		)
+		this.load.image('gameBackground', 'https://labs.phaser.io/assets/skies/space4.png')
 		this.load.image('ground', 'https://labs.phaser.io/assets/textures/grass.png')
 		this.load.image('obstacle', 'https://labs.phaser.io/assets/games/asteroids/asteroid1.png')
 		this.load.audio('jungle', [
@@ -26,10 +38,11 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.bgtile = this.add.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height * 2, 'sky')
-		this.bgtile.setOrigin(0, 0)
-		this.bgtile.setDepth(-1)
-
+		this.scene.launch('GameUIScene')
+		// this.scene.scene.physics.world.drawDebug = true
+		this.bgtile = this.add
+			.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height * 1.7, 'gameBackground')
+			.setDepth(-1)
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = new Player(this, 0, 0)
 		this.player.init()
@@ -38,25 +51,48 @@ export class GameScene extends Phaser.Scene {
 		// pool
 		this.obstaclesPool = this.add.group()
 
-		this.addObstacle()
+		this.anims.create({
+			key: 'diamond',
+			frames: this.anims.generateFrameNames('gems', { prefix: 'diamond_', end: 15, zeroPad: 4 }),
+			repeat: -1,
+		})
+		this.anims.create({
+			key: 'prism',
+			frames: this.anims.generateFrameNames('gems', { prefix: 'prism_', end: 6, zeroPad: 4 }),
+			repeat: -1,
+		})
+		this.anims.create({
+			key: 'ruby',
+			frames: this.anims.generateFrameNames('gems', { prefix: 'ruby_', end: 6, zeroPad: 4 }),
+			repeat: -1,
+		})
+		this.anims.create({
+			key: 'square',
+			frames: this.anims.generateFrameNames('gems', { prefix: 'square_', end: 14, zeroPad: 4 }),
+			repeat: -1,
+		})
+
+		this.nextObstacleDistance = 200 //Phaser.Math.Between(300, 620) //200min
 	}
 
 	update(time, delta) {
+		this.globalScore += this.globalSpeed * delta
+		this.events.emit('addScore')
 		const cursors = this.cursors
 		const player = this.player
-		this.bgtile.tilePositionX += 0.6
-		this.ground.tilePositionX += 0.8
+		this.bgtile.tilePositionX += 0.4
+		this.ground.tilePositionX += this.globalSpeed * delta
 
 		if (this.input.keyboard.addKey('R').isDown) {
 			this.scene.restart()
 		}
 		// this.physics.overlap(player, this.obstaclesPool, (player, obstacle) => this.scene.restart(), null, this)
 
-		if (cursors.left.isDown) {
-			player.move(-player.speed * delta)
-		} else if (cursors.right.isDown) {
-			player.move(player.speed * delta)
-		}
+		// if (cursors.left.isDown) {
+		// 	player.move(-player.speed * delta)
+		// } else if (cursors.right.isDown) {
+		// 	player.move(player.speed * delta)
+		// }
 		if (cursors.up.isDown) {
 			player.jump()
 		}
@@ -68,11 +104,14 @@ export class GameScene extends Phaser.Scene {
 		// recycling platforms
 		let minDistance = this.game.config.width
 		this.obstaclesPool.getChildren().forEach((obstacle) => {
+			// obstacle.angle += 2
+			obstacle.x -= this.globalSpeed * delta
 			let obstacleDistance = this.game.config.width - obstacle.x - obstacle.displayWidth / 2
 			minDistance = Math.min(minDistance, obstacleDistance)
 			if (obstacle.x < -obstacle.displayWidth / 2) {
 				this.obstaclesPool.killAndHide(obstacle)
 				this.obstaclesPool.remove(obstacle)
+				obstacle.body.destroy()
 			}
 		})
 		// adding new platforms
@@ -82,10 +121,19 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	addObstacle() {
-		let obstacle = new Obstacle(this)
-		obstacle.active = true
-		obstacle.visible = true
-		this.obstaclesPool.add(obstacle)
+		if (this.obstacleCounter < 2) {
+			let obstacle = new Obstacle(this)
+			obstacle.active = true
+			obstacle.visible = true
+			this.obstaclesPool.add(obstacle)
+			this.obstacleCounter++
+		} else {
+			let powerup = new PowerUp(this)
+			powerup.active = true
+			powerup.visible = true
+			this.obstaclesPool.add(powerup)
+			this.obstacleCounter = 0
+		}
 		this.nextObstacleDistance = Phaser.Math.Between(300, 620) //200min
 	}
 }

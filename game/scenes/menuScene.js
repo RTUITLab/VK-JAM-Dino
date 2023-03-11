@@ -1,59 +1,106 @@
 export class MenuScene extends Phaser.Scene {
-	bgtile
-	constructor(game) {
+	menuBg
+	constructor() {
 		super({ key: 'MenuScene', active: true, visible: true })
-		this.game = game
 	}
 
 	preload() {
-		this.load.image('sky', 'https://labs.phaser.io/assets/skies/space3.png')
+		this.load.image('background', 'https://labs.phaser.io/assets/skies/space1.png')
+		this.load.css('80s', 'https://labs.phaser.io/assets/loader-tests/80stypography.css')
 	}
+
 	create() {
+		// this.scene.scene.events.on('shutdown', this.shutdown, this)
 		const { width, height } = this.scale
-		this.bgtile = this.add.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height * 2, 'sky')
-		this.bgtile.setOrigin(0, 0)
-		this.bgtile.setDepth(-1)
+		this.menuBg = this.add.image(0, 0, 'background')
+		this.menuBg.setOrigin(0, 0)
+		this.menuBg.setDepth(-2)
+		this.menuBg.displayWidth = width
+		this.menuBg.displayHeight = height
 
 		// кнопка В забег!
 		const playButtonBorderWidth = 4
 		const playButtonPadding = 8
 		const playButton = this.add
-			.text(width * 0.2, height * 0.3, 'В забег!', {
-				fontSize: '5em',
-				fill: '#fff',
-			})
-			.setPadding(playButtonPadding)
-			.setInteractive()
-			.on('pointerdown', () => {
-				this.scene.start('GameScene', { level: 1 })
-			})
-		const playButtonBounds = playButton.getBounds()
-		const playButtonBorderRect = this.add.graphics()
-		playButtonBorderRect.lineStyle(playButtonBorderWidth, 0xffffff)
-		playButtonBorderRect.strokeRect(
-			playButtonBounds.x - playButtonPadding - playButtonBorderWidth / 2,
-			playButtonBounds.y - playButtonPadding - playButtonBorderWidth / 2,
-			playButtonBounds.width + playButtonPadding * 2 + playButtonBorderWidth,
-			playButtonBounds.height + playButtonPadding * 2 + playButtonBorderWidth
-		)
+			.dom(0, 0, 'h1', 'background-color: lime; width: 220px; height: 100px; font: 48px Arial', 'В забег!')
+			.setDepth(22)
 
 		const playButton2 = this.add
-			.text(width * 0.2, height * 0.5, 'Play 2', { fontSize: '32px', fill: '#fff' })
+			.dom(200, 200, 'h1', { height: '200px', width: '200px', color: 'white', fontSize: '40px' }, 'В забег!')
+			.setClassName('chrome')
+
+		const test = this.add
+			.dom(
+				100,
+				100,
+				'div',
+				'background-color: rgba(255, 255, 0, 0.5); width: 300px; height: 200px; font: 48px Arial; font-weight: bold',
+				'hellelelel'
+			)
+			.setOrigin(0)
+
+		console.log(test)
+
+		var h1 = this.add.dom(450, 100, 'h1', null, 'CHROME')
+
+		h1.setClassName('chrome')
+		h1.setDepth(22)
+
+		var h2 = this.add.dom(570, 180, 'h2', null, 'Dreams')
+
+		h2.setClassName('dreams')
+		h2.setAngle(-15)
+
+		this.tweens.add({
+			targets: [h1, h2],
+			y: 500,
+			duration: 3000,
+			ease: 'Sine.easeInOut',
+			loop: -1,
+			yoyo: true,
+		})
+
+		//playButton.setClassName('chrome') //.setDepth(10)
+		// this.tweens.add({
+		// 	targets: playButton,
+		// 	y: 500,
+		// 	duration: 3000,
+		// 	ease: 'Sine.easeInOut',
+		// 	loop: -1,
+		// 	yoyo: true,
+		// })
+		// .setPadding(playButtonPadding)
+		// playButton.setInteractive().on('pointerdown', () => {
+		// 	// this.scene.stop('MenuScene')
+		// 	this.scene.start('GameScene', { level: 1 })
+		// })
+		// const playButtonBounds = playButton.getBounds()
+		// const playButtonBorderRect = this.add.graphics()
+		// playButtonBorderRect.lineStyle(playButtonBorderWidth, 0xffffff)
+		// playButtonBorderRect.strokeRect(
+		// 	playButtonBounds.x - playButtonPadding - playButtonBorderWidth / 2,
+		// 	playButtonBounds.y - playButtonPadding - playButtonBorderWidth / 2,
+		// 	playButtonBounds.width + playButtonPadding * 2 + playButtonBorderWidth,
+		// 	playButtonBounds.height + playButtonPadding * 2 + playButtonBorderWidth
+		// )
+
+		const shopButton = this.add
+			.text(width * 0.2, height * 0.45, 'В магазин', { fontSize: '4em', fill: '#fff' })
 			.setInteractive()
 			.on('pointerdown', () => {
-				this.scene.start('GameScene', { level: 2 })
+				//this.scene.start('ShopScene')
 			})
 
 		// create settings and exit buttons in the bottom left
 		const settingsButton = this.add
-			.text(50, height - 50, 'Settings', { fontSize: '24px', fill: '#fff' })
+			.text(width * 0.2, height - 150, 'Settings', { fontSize: '3.3em', fill: '#fff' })
 			.setInteractive()
 			.on('pointerdown', () => {
 				// open settings menu
 			})
 
 		const exitButton = this.add
-			.text(50, height - 25, 'Exit', { fontSize: '24px', fill: '#fff' })
+			.text(width * 0.2, height - 100, 'Exit', { fontSize: '3.3em', fill: '#fff' })
 			.setInteractive()
 			.on('pointerdown', () => {
 				// exit the game
@@ -62,9 +109,10 @@ export class MenuScene extends Phaser.Scene {
 		// create empty space for images on the right
 		const imageSpace = this.add
 			.graphics()
-			.fillStyle(0xffffff)
-			.fillRect(width * 0.6, 0, width * 0.4, height)
+			.fillStyle(0xffff23f)
+			.fillRect(width * 0.5, 0, width / 2, height)
 	}
+
 	update() {
 		// this.input.on('pointerup', () => {
 		// 	this.scale.startFullscreen()
