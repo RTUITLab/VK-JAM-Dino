@@ -1,22 +1,18 @@
 {
-  "name": "vk-jam-dyno",
-  "version": "1.0.0",
-  "description": "hi",
-  "main": "index.js",
+  "name": "dinocup",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RTUITLab/VK-JAM-Dino.git"
+  "devDependencies": {
+    "vite": "^4.1.0"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/RTUITLab/VK-JAM-Dino/issues"
-  },
-  "homepage": "https://github.com/RTUITLab/VK-JAM-Dino#readme",
   "dependencies": {
+    "@vkontakte/vk-bridge": "^2.7.2",
     "phaser": "^3.55.2"
   }
 }
