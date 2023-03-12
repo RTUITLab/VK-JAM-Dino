@@ -26,7 +26,6 @@ export class MenuScene extends Phaser.Scene {
 		h1.setDepth(1)
 		h1.addListener('click').on('click', () => {
 			this.scene.start('GameScene', { level: 1 })
-			this.scene.sleep('MenuScene')
 		})
 
 		const teamMode = this.add.dom(width * 0.2, height * 0.3, 'h2', 'width:20px;font-size:2em;', 'Team')
@@ -98,7 +97,7 @@ export class MenuScene extends Phaser.Scene {
 			.text(width * 0.2, height * 0.45, 'В магазин', { fontSize: '4em', fill: '#fff' })
 			.setInteractive()
 			.on('pointerdown', () => {
-				//this.scene.start('ShopScene')
+				this.scene.start('ShopScene')
 			})
 
 		// create settings and exit buttons in the bottom left
@@ -117,10 +116,10 @@ export class MenuScene extends Phaser.Scene {
 			})
 
 		// create empty space for images on the right
-		const imageSpace = this.add
-			.graphics()
-			.fillStyle(0xffff23f)
-			.fillRect(width * 0.5, 0, width / 2, height)
+		// const imageSpace = this.add
+		// 	.graphics()
+		// 	.fillStyle(0xffff23f)
+		// 	.fillRect(width * 0.5, 0, width / 2, height)
 	}
 
 	update() {

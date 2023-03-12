@@ -158,7 +158,7 @@ export class GameScene extends Phaser.Scene {
 		this.seed = nextTick
 	}
 
-	restartGame() {
-		this.scene.restart()
+	shutdown() {
+		this.scene.stop('GameUIScene')
 	}
 }

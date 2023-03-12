@@ -35,9 +35,8 @@ export class GameOverScene extends Phaser.Scene {
 		const quitButton = this.add.dom(width / 2 + 100, height / 2 + 50).createFromCache('glowingButton')
 		quitButton.node.getElementsByClassName('text')[0].innerText = 'В меню'
 		quitButton.addListener('click').on('click', () => {
-			this.scene.start('GameScene')
-		})
-		quitButton.addListener('click').on('click', () => {
+			this.scene.get('GameScene').shutdown()
+			this.scene.stop('GameScene')
 			this.scene.start('MenuScene')
 			this.scene.bringToTop('MenuScene')
 		})
