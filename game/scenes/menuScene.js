@@ -1,7 +1,7 @@
 export class MenuScene extends Phaser.Scene {
 	menuBg
 	constructor() {
-		super({ key: 'MenuScene', active: true, visible: true })
+		super({ key: 'MenuScene', active: false, visible: false })
 	}
 
 	preload() {

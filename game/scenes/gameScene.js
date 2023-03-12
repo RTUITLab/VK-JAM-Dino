@@ -12,28 +12,52 @@ export class GameScene extends Phaser.Scene {
 	cursors
 	player
 	globalSpeed
+	maxSpeed
+	controlSpeed
 	globalDistance
 	globalScore
+	tempScore
 	ground
 	obstacleCounter
 	constructor() {
-		super({ key: 'GameScene' })
+		super({ key: 'GameScene', active: true, visible: true })
 		this.obstacleCounter = 0
 		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
+		this.maxSpeed = Phaser.Math.GetSpeed(1200, 1)
+		this.controlSpeed = 250
 		this.globalScore = 0
+		this.tempScore = 0
 		this.globalDistance = 500
-		this.seed = '9a7f' // random hex lenght 5
+		this.seed = '9b2f' // random hex lenght 5
 	}
 
 	preload() {
 		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
+		this.load.image('player', 'assets/player/idle-3.png')
+		this.load.spritesheet('playerRun', 'assets/player/run/spritesheet.png', {
+			frameWidth: 71,
+			frameHeight: 67,
+			endFrame: 7,
+		})
+		this.load.spritesheet('playerJump', 'assets/player/jump/spritesheet.png', {
+			frameWidth: 71,
+			frameHeight: 67,
+			endFrame: 4,
+		})
+		// this.load.image('dude', this.registry.get('vkData').photo_100)
 		this.load.atlas(
 			'gems',
 			'https://labs.phaser.io/assets/tests/columns/gems.png',
 			'https://labs.phaser.io/assets/tests/columns/gems.json'
 		)
-		this.load.image('gameBackground', 'https://labs.phaser.io/assets/skies/space4.png')
-		this.load.image('ground', 'https://labs.phaser.io/assets/textures/grass.png')
+		this.load.image(
+			'gameBackground',
+			'https://rare-gallery.com/thumbs/982899-Retrowave-neon-artwork-minimalism-digital-art.png'
+		) // 'assets/gamebg/foreground.png')
+		this.load.image(
+			'ground',
+			'https://lpc.opengameart.org/sites/default/files/oga-textures/15886/ground_asphalt_old_06.png'
+		)
 		this.load.image('obstacle', 'https://labs.phaser.io/assets/games/asteroids/asteroid1.png')
 		this.load.audio('jungle', [
 			'https://labs.phaser.io/assets/audio/jungle.ogg',
@@ -42,14 +66,20 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.scene.stop('MenuScene') //! REMOVE
+
 		this.globalScore = 0 //reset on restart
+		this.tempScore = 0
+		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
+
 		this.scene.launch('GameUIScene')
 		// this.scene.scene.physics.world.drawDebug = true
 		this.bgtile = this.add
-			.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height * 1.7, 'gameBackground')
+			.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height, 'gameBackground')
 			.setDepth(-1)
+			.setScale(1.7)
 		this.cursors = this.input.keyboard.createCursorKeys()
-		this.player = new Player(this, 0, 0)
+		this.player = new Player(this, this.game.config.width * 0.1, 0)
 		this.player.init()
 		this.ground = new Ground(this)
 		this.scene.scene.physics.add.collider(this.player, this.ground)
@@ -81,7 +111,18 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	update(time, delta) {
+		// this.globalSpeed += 0.0000001
 		this.globalScore += this.globalSpeed * delta
+		this.currentSpeed = this.globalSpeed
+		this.tempScore += this.globalSpeed * delta
+		if (this.currentSpeed < this.maxSpeed) {
+			if (this.tempScore / 10 >= this.controlSpeed) {
+				this.tempScore = 0
+				this.globalSpeed += Phaser.Math.GetSpeed(120, 1)
+				this.controlSpeed *= this.globalSpeed / this.currentSpeed
+				this.globalDistance *= this.globalSpeed / this.currentSpeed
+			}
+		}
 		this.events.emit('addScore')
 		const cursors = this.cursors
 		const player = this.player
@@ -107,20 +148,21 @@ export class GameScene extends Phaser.Scene {
 		// }
 
 		// recycling platforms
-		let minDistance = this.game.config.width
+		let obstacleDistance = this.game.config.width
 		this.obstaclesPool.getChildren().forEach((obstacle) => {
 			// obstacle.angle += 2
 			obstacle.x -= this.globalSpeed * delta
-			let obstacleDistance = this.game.config.width - obstacle.x - obstacle.displayWidth / 2
-			minDistance = Math.min(minDistance, obstacleDistance)
-			if (obstacle.x < -obstacle.displayWidth / 2) {
+			obstacleDistance = Math.abs(this.game.config.width - obstacle.x - obstacle.displayWidth / 2) //this.game.config.width - obstacle.x - obstacle.displayWidth / 2
+			// minDistance = obstacleDistance //Math.min(minDistance, obstacleDistance)
+			if (obstacle.x < -obstacle.displayWidth / 2 && this.obstaclesPool.getLength() > 2) {
 				this.obstaclesPool.killAndHide(obstacle)
 				this.obstaclesPool.remove(obstacle)
 				obstacle.body.destroy()
 			}
 		})
+		// console.log(minDistance, this.nextObstacleDistance)
 		// adding new platforms
-		if (minDistance > this.nextObstacleDistance) {
+		if (obstacleDistance > this.nextObstacleDistance) {
 			this.addObstacle()
 		}
 	}

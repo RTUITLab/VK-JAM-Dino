@@ -5,7 +5,30 @@ import { GameScene } from './game/scenes/gameScene'
 import { GameUIScene } from './game/scenes/gameUIScene'
 import { MenuScene } from './game/scenes/menuScene'
 import { ShopScene } from './game/scenes/shopScene'
-bridge.send('VKWebAppInit', {})
+
+// import button from './html/glowingButton.html'
+// button
+async function getVkInfo() {
+	const vkUser = await bridge.send('VKWebAppGetUserInfo')
+	// setVkUser(vkUser)
+	return vkUser
+	// bridge
+	// 	.send('VKWebAppStorageGet', {
+	// 		keys: ['address'],
+	// 	})
+	// 	.then((data) => {
+	// 		if (data.keys) {
+	// 			console.log('walletAddress successfully restored')
+	// 			setUser({ ...user, walletAddress: data.keys[0].value.toString() })
+	// 		}
+	// 	})
+	// 	.catch((error) => {
+	// 		// Ошибка
+	// 		console.log('walletAddress unsuccessfully unrestored')
+	// 	})
+}
+
+bridge.send('VKWebAppInit')
 
 var config = {
 	type: Phaser.AUTO,
@@ -33,3 +56,9 @@ var config = {
 }
 
 var game = new Phaser.Game(config)
+
+console.log('game', game)
+getVkInfo().then((v) => {
+	console.log('vk', v)
+	game.registry.set('vkData', v)
+})
