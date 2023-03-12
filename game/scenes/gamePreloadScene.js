@@ -79,7 +79,7 @@ export class PreloadGameScene extends Phaser.Scene {
 	}
 
 	update() {
-		const usersCount = this.game.registry.get('user_count') || 0
+		const usersCount = this.game.registry.get('user_count') || 1
 		this.usersText.text = 'Найдено: ' + usersCount + '/20'
 	}
 }

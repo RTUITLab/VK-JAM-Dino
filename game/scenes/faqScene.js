@@ -1,6 +1,6 @@
-export class ShopScene extends Phaser.Scene {
+export class FAQScene extends Phaser.Scene {
 	constructor() {
-		super({ key: 'ShopScene', active: false, visible: false })
+		super({ key: 'FAQScene', active: false, visible: false })
 	}
 
 	preload() {
@@ -18,7 +18,7 @@ export class ShopScene extends Phaser.Scene {
 
 		// Create the game over text
 		const gameOverText = this.add
-			.text(width / 2, height / 2 - 100, 'Магазин', {
+			.text(width / 2, height / 2 - 150, 'Справка', {
 				fontFamily: 'Arial',
 				fontSize: '48px',
 				color: '#ffffff',
@@ -27,7 +27,7 @@ export class ShopScene extends Phaser.Scene {
 			.setDepth(11)
 
 		const emptyText = this.add
-			.text(width / 2, height / 2 - 20, 'Пока здесь пусто..', {
+			.text(width / 2, height / 2 - 20, 'Футурус', {
 				fontFamily: 'Arial',
 				fontSize: '18px',
 				color: '#ffffff',

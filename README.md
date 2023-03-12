@@ -6,3 +6,5 @@
 npm i
 npm run dev
 ```
+
+multiplayer is available on local playing

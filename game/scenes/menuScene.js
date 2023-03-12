@@ -185,6 +185,12 @@ export class MenuScene extends Phaser.Scene {
 			this.scene.start('ShopScene')
 		})
 
+		// const faqButton = this.add.dom(width / 2 + 30, height / 2 + 240).createFromCache('glowingButton')
+		// faqButton.node.getElementsByClassName('text')[0].innerText = 'FAQ'
+		// faqButton.addListener('click').on('click', () => {
+		// 	this.scene.start('FAQScene')
+		// })
+
 		// кнопка В забег!
 		// const h1 = this.add.dom(width * 0.2, height * 0.1, 'h1', 'width:300px;', 'В забег!')
 
