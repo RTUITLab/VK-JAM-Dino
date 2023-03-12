@@ -1,9 +1,10 @@
-FROM node:16
+FROM nginx
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY . .
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 3000
 
-CMD npx serve dist
+CMD 
