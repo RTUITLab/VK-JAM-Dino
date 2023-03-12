@@ -20,16 +20,11 @@ export class GameScene extends Phaser.Scene {
 	tempScore
 	ground
 	obstacleCounter
+	levelCounter
 	constructor() {
 		super({ key: 'GameScene', active: true, visible: true })
-		this.obstacleCounter = 0
-		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
-		this.maxSpeed = Phaser.Math.GetSpeed(1200, 1)
-		this.controlSpeed = 250
-		this.globalScore = 0
-		this.tempScore = 0
-		this.globalDistance = 500
-		this.seed = '9b2f' // random hex lenght 5
+		this.seed = '9b3f' // random hex lenght 5
+		this.initVars()
 	}
 
 	preload() {
@@ -70,12 +65,21 @@ export class GameScene extends Phaser.Scene {
 		])
 	}
 
+	initVars() {
+		this.obstacleCounter = 0
+		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
+		this.maxSpeed = Phaser.Math.GetSpeed(1200, 1)
+		this.controlSpeed = 250
+		this.globalScore = 0
+		this.tempScore = 0
+		this.globalDistance = 500
+		this.levelCounter = 0
+	}
+
 	create() {
 		this.scene.stop('MenuScene') //! REMOVE
 
-		this.globalScore = 0 //reset on restart
-		this.tempScore = 0
-		this.globalSpeed = Phaser.Math.GetSpeed(200, 1)
+		this.initVars()
 
 		this.scene.launch('GameUIScene')
 		// this.scene.scene.physics.world.drawDebug = true
@@ -125,6 +129,8 @@ export class GameScene extends Phaser.Scene {
 				this.tempScore = 0
 				this.globalSpeed += Phaser.Math.GetSpeed(120, 1)
 				this.controlSpeed *= this.globalSpeed / this.currentSpeed
+				this.levelCounter++
+				console.log('level', this.levelCounter)
 				// this.globalDistance *= 0.1 + this.currentSpeed
 			}
 		}
@@ -203,9 +209,16 @@ export class GameScene extends Phaser.Scene {
 				powerup.visible = true
 				this.obstaclesPool.add(powerup)
 				break
+			case 'v-truck':
+				if (this.levelCounter < 3) {
+					let car = new Car(this, nextObject, { flying: true })
+					car.active = true
+					car.visible = true
+					this.obstaclesPool.add(car)
+					break
+				}
 			case 'v-police':
 			case 'v-red':
-			case 'v-truck':
 			case 'v-yellow':
 				let car = new Car(this, nextObject)
 				car.active = true
