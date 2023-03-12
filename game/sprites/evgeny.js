@@ -12,7 +12,7 @@ export class Evgeny extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this)
 		this.setImmovable(true)
 		// this.body.setVelocityX(-scene.globalSpeed)
-		scene.physics.add.collider(scene.player, this, this.gameOver.bind(this), this.gameOver.bind(this))
+		scene.physics.add.collider(scene.player, this, this.gameOver.bind(this))
 		// Set the hit area
 		const oval = new Phaser.Geom.Ellipse(5, 5, 25, 25)
 		this.body.setCircle(oval.width / 2, oval.x, oval.y)
