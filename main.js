@@ -48,7 +48,7 @@ var config = {
 		height: 1080,
 	},
 	scale: {
-		mode: Phaser.Scale.ScaleModes.SHOW_ALL,
+		mode: Phaser.Scale.ScaleModes.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
 	pixelArt: true,

@@ -40,6 +40,8 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
 		this.setImmovable(true)
 		scene.physics.add.collider(scene.player, this, this.gameOver.bind(scene), this.gameOver.bind(scene))
 		// Set the hit area
+
+		this.setSize(carWidth * 0.7, carHeight * 0.45)
 		this.body.debugBodyColor = 0xff0000
 		this.body.debugShowBody = true
 	}

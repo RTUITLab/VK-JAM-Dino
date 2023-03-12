@@ -111,7 +111,7 @@ export class MenuScene extends Phaser.Scene {
 			.text(width * 0.2, height - 100, 'Exit', { fontSize: '3.3em', fill: '#fff' })
 			.setInteractive()
 			.on('pointerdown', () => {
-				// exit the game
+				// this.physics.world.debug.drawDebug = !this.physics.world.debug.drawDebug
 			})
 
 		// create empty space for images on the right
