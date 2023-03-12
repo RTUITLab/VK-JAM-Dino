@@ -26,13 +26,21 @@ export class GameUIScene extends Phaser.Scene {
 
 		const buttonMargin = 10
 		const buttonSize = 50
-
+		const container = this.add.container(0, 0)
 		const button1 = this.add.circle(
 			width - buttonMargin - buttonSize / 2,
 			buttonMargin + buttonSize / 2,
 			buttonSize / 2,
 			0xff0000
 		)
+		const button1Text = this.add.text(button1.x, button1.y, '1', {
+			fontSize: '32px',
+			color: '#ffffff',
+		})
+		button1Text.setOrigin(0.5)
+		container.add(button1)
+		container.add(button1Text)
+
 		const button2 = this.add.circle(
 			width - buttonMargin - buttonSize / 2,
 			2 * buttonMargin + (3 * buttonSize) / 2,
@@ -51,7 +59,7 @@ export class GameUIScene extends Phaser.Scene {
 		button3.setInteractive()
 
 		button1.on('pointerdown', () => {
-			// Handle button 1 click
+			// this.scene.get('GameScene').player.setDepth(100)
 		})
 
 		button2.on('pointerdown', () => {

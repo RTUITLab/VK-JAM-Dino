@@ -58,7 +58,7 @@ export class MenuScene extends Phaser.Scene {
 						this
 					)
 
-					sfs.send(new SFS2X.LoginRequest(new Date().toLocaleString(), '', null, 'BasicExamples'))
+					sfs.send(new SFS2X.LoginRequest(new Date().toLocaleString(), '', null, 'BasicExamples')) //!UNCOMMENT
 				} else {
 					console.log('params')
 				}
