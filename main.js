@@ -1,6 +1,7 @@
 import bridge from '@vkontakte/vk-bridge'
 import Phaser from 'phaser'
 import { GameOverScene } from './game/scenes/gameOverScene'
+import { PreloadGameScene } from './game/scenes/gamePreloadScene'
 import { GameScene } from './game/scenes/gameScene'
 import { GameUIScene } from './game/scenes/gameUIScene'
 import { MenuScene } from './game/scenes/menuScene'
@@ -39,7 +40,7 @@ var config = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			debug: true,
+			// debug: true,
 			// gravity: { y: 800 },
 		},
 	},
@@ -51,8 +52,8 @@ var config = {
 		mode: Phaser.Scale.ScaleModes.AUTO,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
-	pixelArt: true,
-	scene: [MenuScene, GameScene, GameUIScene, ShopScene, GameOverScene],
+	pixelArt: true, //remove
+	scene: [MenuScene, PreloadGameScene, GameScene, GameUIScene, ShopScene, GameOverScene],
 }
 
 var game = new Phaser.Game(config)

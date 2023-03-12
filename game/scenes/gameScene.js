@@ -234,7 +234,7 @@ export class GameScene extends Phaser.Scene {
 		console.log('real gameover')
 		console.log('gr', this.scene)
 		const stats = {
-			room_id: '0',
+			room_id: String(this.game.registry.get('roomId') || 'none'),
 			user_id: String(this.game.registry.get('vkData')?.id || 'none'),
 			score: parseInt(this.scene.scene.globalScore / 10),
 			level: parseInt(this.scene.scene.levelCounter),

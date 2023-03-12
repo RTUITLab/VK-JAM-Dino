@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as SFS2X from "sfs2x-api";
+import * as SFS2X from 'sfs2x-api'
 
 export class MenuScene extends Phaser.Scene {
 	menuBg
@@ -36,25 +36,37 @@ export class MenuScene extends Phaser.Scene {
 		this.menuBg.displayWidth = width
 		this.menuBg.displayHeight = height
 
-		const sfs = new SFS2X.SmartFox();
+		const sfs = new SFS2X.SmartFox()
 		window.sfs = sfs
-		sfs.addEventListener(SFS2X.SFSEvent.CONNECTION, (params) => {
-			if (params.success) {
-				console.log(params)
-				sfs.addEventListener(SFS2X.SFSEvent.LOGIN, (data) => {
-					console.log(data)
-				}, this)
-				sfs.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, (data) => {
-					console.log(data)
-				}, this)
+		sfs.addEventListener(
+			SFS2X.SFSEvent.CONNECTION,
+			(params) => {
+				if (params.success) {
+					console.log(params)
+					sfs.addEventListener(
+						SFS2X.SFSEvent.LOGIN,
+						(data) => {
+							console.log(data)
+						},
+						this
+					)
+					sfs.addEventListener(
+						SFS2X.SFSEvent.LOGIN_ERROR,
+						(data) => {
+							console.log(data)
+						},
+						this
+					)
 
-				sfs.send(new SFS2X.LoginRequest(new Date().toLocaleString(), "", null, "BasicExamples"))
-			} else {
-				console.log('params')
-			}
-		}, this)
+					sfs.send(new SFS2X.LoginRequest(new Date().toLocaleString(), '', null, 'BasicExamples'))
+				} else {
+					console.log('params')
+				}
+			},
+			this
+		)
 
-		sfs.connect("51.250.110.149", 8080);
+		sfs.connect('51.250.110.149', 8080)
 
 		let title = this.add
 			.text(
@@ -81,61 +93,93 @@ export class MenuScene extends Phaser.Scene {
 		// 		this
 		// 	)
 
-		let optionsButton = this.add
-			.image(this.game.renderer.width / 2, this.game.renderer.height / 2 + 200, 'options')
-			.setDepth(1)
+		// let optionsButton = this.add
+		// 	.image(this.game.renderer.width / 2, this.game.renderer.height / 2 + 200, 'options')
+		// 	.setDepth(1)
 
 		// кнопка В забег!
 		const h1 = this.add.dom(width * 0.2, height * 0.1, 'h1', 'width:300px;', 'В забег!')
 
-		const startButton = this.add.dom(width / 2 - 160, height / 2 + 50).createFromCache('glowingButton')
+		const startButton = this.add.dom(width / 2 - 160, height / 2 + 80).createFromCache('glowingButton')
 		startButton.node.classList.add('green')
 		startButton.node.getElementsByClassName('text')[0].innerText = 'Играть'
 		startButton.addListener('click').on('click', () => {
-			sfs.addEventListener(SFS2X.SFSEvent.ROOM_ADD, (d) => {
-				console.log('ADD', d)
-				setTimeout(() => {
-					var roomVars = [];
-					roomVars.push(new SFS2X.SFSRoomVariable("gameStarted", true));
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_ADD,
+				(d) => {
+					console.log('ADD', d)
+					setTimeout(() => {
+						var roomVars = []
+						roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
 
-					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars));
-				}, 10000)
-			}, this);
-			sfs.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, (d) => {
-				sfs.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, () => {
-					this.scene.start('GameScene')
-				}, this);
-				console.log('JOIN room_id: ', d.room._id)
-				// Мы вошли в комнату
-			}, this);
-			sfs.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, (d) => {
-				console.log('CE', d)
-			}, this);
-			sfs.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, (d) => {
-				console.log('JE', d)
-			}, this);
-			sfs.addEventListener(SFS2X.SFSEvent.USER_COUNT_CHANGE, (p) => {
-				// Изменение игроков в комнате
-				console.log('user_count: ', p.uCount)
-			}, this)
+						sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
+					}, 10000)
+				},
+				this
+			)
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_JOIN,
+				(d) => {
+					sfs.addEventListener(
+						SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
+						() => {
+							this.scene.stop('gamePreloadScene')
+							this.scene.start('GameScene')
+							this.scene.bringToTop('GameScene')
 
-			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20));
-			settings.groupId = "games";
-			settings.isPublic = true;
-			settings.isGame = true;
-			settings.maxUsers = 20;
-			settings.minPlayersToStartGame = 2;
+							// this.scene.get('GameScene')
+						},
+						this
+					)
+					console.log('JOIN room_id: ', d.room._id)
+					this.game.registry.set('roomId', d.room._id)
+					// Мы вошли в комнату
+				},
+				this
+			)
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_CREATION_ERROR,
+				(d) => {
+					console.log('CE', d)
+				},
+				this
+			)
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_JOIN_ERROR,
+				(d) => {
+					console.log('JE', d)
+				},
+				this
+			)
+			sfs.addEventListener(
+				SFS2X.SFSEvent.USER_COUNT_CHANGE,
+				(p) => {
+					// Изменение игроков в комнате
+					console.log('user_count: ', p.uCount)
+					this.game.registry.set('user_count', p.uCount)
+				},
+				this
+			)
+
+			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20))
+			settings.groupId = 'games'
+			settings.isPublic = true
+			settings.isGame = true
+			settings.maxUsers = 20
+			settings.minPlayersToStartGame = 2
 			settings.allowUserCountChange = true
 
-			const roomVars = [];
-			roomVars.push(new SFS2X.SFSRoomVariable("gameStarted", false));
+			const roomVars = []
+			roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', false))
 			settings.variables = roomVars
 
 			const exp = new SFS2X.MatchExpression('gameStarted', SFS2X.BoolMatch.EQUALS, false)
-			sfs.send(new SFS2X.QuickJoinOrCreateRoomRequest(exp, ["games"], settings, sfs.lastJoinedRoom));
+			sfs.send(new SFS2X.QuickJoinOrCreateRoomRequest(exp, ['games'], settings, sfs.lastJoinedRoom))
+
+			this.scene.start('PreloadGameScene')
 		})
 
-		const shopButton = this.add.dom(width / 2 + 160, height / 2 + 50).createFromCache('glowingButton')
+		const shopButton = this.add.dom(width / 2 + 160, height / 2 + 80).createFromCache('glowingButton')
 		shopButton.node.getElementsByClassName('text')[0].innerText = 'В магазин'
 		shopButton.addListener('click').on('click', () => {
 			this.scene.start('ShopScene')
