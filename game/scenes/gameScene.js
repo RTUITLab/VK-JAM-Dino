@@ -26,10 +26,6 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image(
-			'ivan',
-			'https://sun1-27.userapi.com/impg/E2BDZkKljxgMQgv11GiarjqOLMrBUJZtLhTJbQ/agILbMu9EgI.jpg?size=1280x761&quality=96&sign=290343c52af9f376b605d78f06fa6041&type=album'
-		)
 		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
 		this.load.atlas(
 			'gems',
@@ -85,7 +81,10 @@ export class GameScene extends Phaser.Scene {
 
 	update(time, delta) {
 		this.globalScore += this.globalSpeed * delta
-		this.events.emit('addScore')
+		console.log(this.scene.get('GameUIScene'))
+		if (this.scene.get('GameUIScene')) {
+			this.events.emit('addScore')
+		}
 		const cursors = this.cursors
 		const player = this.player
 		this.bgtile.tilePositionX += 0.4

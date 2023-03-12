@@ -13,6 +13,7 @@ export class GameUIScene extends Phaser.Scene {
 		var gameScene = this.scene.get('GameScene')
 
 		//  Listen for events from it
+		console.log('fff', gameScene)
 		gameScene.events.on(
 			'addScore',
 			function () {

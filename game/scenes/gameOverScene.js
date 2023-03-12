@@ -32,9 +32,7 @@ export class GameOverScene extends Phaser.Scene {
 			.setDepth(11)
 			.setInteractive()
 			.on('pointerup', () => {
-				console.log(this.events)
-				this.physics.pause()
-				this.events.off()
+				this.scene.stop('GameScene')
 				this.scene.start('GameScene')
 			})
 
@@ -47,10 +45,10 @@ export class GameOverScene extends Phaser.Scene {
 			.setDepth(11)
 			.setInteractive()
 			.on('pointerup', () => {
-				this.scene.stop('GameOverScene')
-				this.scene.stop('GameUIScene')
 				this.scene.stop('GameScene')
-				this.scene.wake('MenuScene')
+				this.scene.start('MenuScene')
+				this.scene.bringToTop('MenuScene')
+				this.scene.stop('GameOverScene')
 				this.scene.bringToTop('MenuScene')
 			})
 	}
