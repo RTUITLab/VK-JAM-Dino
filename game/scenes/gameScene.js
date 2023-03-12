@@ -31,7 +31,6 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
 		this.load.image('control-box-1', 'assets/boxes/control-box-1.png')
 		this.load.image('control-box-2', 'assets/boxes/control-box-2.png')
 		this.load.image('player', 'assets/player/idle-3.png')
@@ -46,15 +45,7 @@ export class GameScene extends Phaser.Scene {
 			endFrame: 4,
 		})
 		// this.load.image('dude', this.registry.get('vkData').photo_100)
-		this.load.atlas(
-			'gems',
-			'https://labs.phaser.io/assets/tests/columns/gems.png',
-			'https://labs.phaser.io/assets/tests/columns/gems.json'
-		)
-		this.load.image(
-			'gameBackground',
-			'https://rare-gallery.com/thumbs/982899-Retrowave-neon-artwork-minimalism-digital-art.png'
-		) // 'assets/gamebg/foreground.png')
+		this.load.image('gameBackground', 'assets/gamebg/mainbg.png') // 'assets/gamebg/foreground.png')
 		this.load.image(
 			'ground',
 			'assets/gamebg/ground.png'
