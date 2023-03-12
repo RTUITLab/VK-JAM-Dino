@@ -4,7 +4,7 @@ export class GameOverScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.html('glowingButton', '../../html/glowingButton.html')
+		this.load.html('glowingButton', '/html/glowingButton.html')
 	}
 
 	create() {
