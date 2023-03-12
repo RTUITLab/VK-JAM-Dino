@@ -54,7 +54,7 @@ var config = {
 		mode: Phaser.Scale.ScaleModes.AUTO,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
-	pixelArt: true, //remove
+	// pixelArt: true, //remove
 	scene: [MenuScene, PreloadGameScene, GameScene, GameUIScene, ShopScene, GameOverScene],
 }
 

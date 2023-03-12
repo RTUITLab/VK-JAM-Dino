@@ -79,6 +79,7 @@ export class GameScene extends Phaser.Scene {
 		this.scene.stop('PreloadGameScene')
 		this.scene.stop('GameUIScene')
 		this.scene.launch('GameUIScene')
+		this.scene.bringToTop('GameUIScene')
 
 		this.bgtile = this.add
 			.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height, 'gameBackground')
