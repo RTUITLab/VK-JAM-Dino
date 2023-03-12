@@ -24,12 +24,13 @@ export class GameScene extends Phaser.Scene {
 	levelCounter
 	constructor() {
 		super({ key: 'GameScene', active: false, visible: false })
-		this.seed = '9b3f' // random hex lenght 5
+		this.seed = [...Array(5)].map(() => Math.floor(Math.random() * 16).toString(16)).join('') //'9y3f' // random hex lenght 5
 		this.initVars()
 	}
 
 	preload() {
 		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
+		this.load.image('control-box-1', 'assets/boxes/control-box-1.png')
 		this.load.image('player', 'assets/player/idle-3.png')
 		this.load.spritesheet('playerRun', 'assets/player/run/spritesheet.png', {
 			frameWidth: 71,
@@ -53,7 +54,8 @@ export class GameScene extends Phaser.Scene {
 		) // 'assets/gamebg/foreground.png')
 		this.load.image(
 			'ground',
-			'https://lpc.opengameart.org/sites/default/files/oga-textures/15886/ground_asphalt_old_06.png'
+			'assets/gamebg/ground.png'
+			//'https://lpc.opengameart.org/sites/default/files/oga-textures/15886/ground_asphalt_old_06.png'
 		)
 		this.load.image('obstacle', 'https://labs.phaser.io/assets/games/asteroids/asteroid1.png')
 		this.load.image('v-police', 'assets/obstacles/v-police.png')
@@ -78,8 +80,6 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.scene.stop('MenuScene') //! REMOVE
-
 		this.initVars()
 
 		this.scene.launch('GameUIScene')
