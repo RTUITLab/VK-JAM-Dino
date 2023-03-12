@@ -49,10 +49,5 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
 
 	gameOver() {
 		this.scene.gameOver({ killer: this.type })
-		// this.scene.scene.player.destroy() //TODO: remove double player
-		// this.scene.restart()
-		// this.scene.pause('GameScene')
-		// this.scene.pause('GameUIScene')
-		// this.scene.launch('GameOverScene')
 	}
 }

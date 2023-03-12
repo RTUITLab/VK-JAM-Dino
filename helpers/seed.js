@@ -24,6 +24,7 @@ function tick(seedH) {
 }
 
 function normalise(seed) {
+	console.log(seed)
 	let currentIndex = parseInt(seed.at(-2), 16)
 	let options = ['obstacle', 'evgeny', 'empty', 'powerup', 'v-police', 'v-red', 'v-truck', 'v-yellow']
 	console.log('next item:', options[Math.floor(currentIndex / 2)])

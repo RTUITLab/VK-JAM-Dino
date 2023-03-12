@@ -110,7 +110,7 @@ export class MenuScene extends Phaser.Scene {
 				setTimeout(() => {
 					var roomVars = []
 					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
-					roomVars.push(new SFS2X.SFSRoomVariable('seed', SEED))	// TODO: gen seed
+					roomVars.push(new SFS2X.SFSRoomVariable('seed', window.seed))
 
 					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
 				}, 10000)
@@ -123,15 +123,12 @@ export class MenuScene extends Phaser.Scene {
 				this.game.registry.set('roomId', d.room._id)
 			}
 
-			sfs.addEventListener(
-				SFS2X.SFSEvent.ROOM_ADD,
-				addRoomHandler,
-				this
-			)
+			sfs.addEventListener(SFS2X.SFSEvent.ROOM_ADD, addRoomHandler, this)
 			sfs.addEventListener(
 				SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
 				(d) => {
-					console.log(d.room._variables['seed'])	// TODO: GET SEED
+					console.log('td', d.room._variables['seed'])
+					window.seed ??= d.room._variables['seed']
 					this.scene.stop('gamePreloadScene')
 					this.scene.stop('GameScene')
 					this.scene.start('GameScene')
@@ -139,11 +136,7 @@ export class MenuScene extends Phaser.Scene {
 				},
 				this
 			)
-			sfs.addEventListener(
-				SFS2X.SFSEvent.ROOM_JOIN,
-				joinRoomHandler,
-				this
-			)
+			sfs.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, joinRoomHandler, this)
 			sfs.addEventListener(
 				SFS2X.SFSEvent.ROOM_CREATION_ERROR,
 				(d) => {

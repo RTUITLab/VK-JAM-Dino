@@ -26,7 +26,6 @@ export class GameScene extends Phaser.Scene {
 	buildings
 	constructor() {
 		super({ key: 'GameScene', active: false, visible: false })
-		this.seed = [...Array(5)].map(() => Math.floor(Math.random() * 16).toString(16)).join('') //'9y3f' // random hex lenght 5
 		this.initVars()
 	}
 
@@ -69,6 +68,7 @@ export class GameScene extends Phaser.Scene {
 		this.tempScore = 0
 		this.globalDistance = 500
 		this.levelCounter = 0
+		this.seed = window.seed
 	}
 
 	create() {
@@ -172,6 +172,8 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	addObstacle() {
+		if (!this.seed) this.seed = window.seed //[...Array(5)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+
 		let nextObject = normalise(this.seed)
 		switch (nextObject) {
 			case 'empty':
@@ -236,7 +238,7 @@ export class GameScene extends Phaser.Scene {
 					user_id: String(this.game.registry.get('vkData')?.id || 'none'),
 					score: parseInt(this.scene.scene.globalScore / 10),
 					level: parseInt(this.scene.scene.levelCounter),
-					seed: this.scene.scene.seed,
+					seed: this.game.registry.get('seed'),
 					killer: props.killer,
 				}
 				console.log('stats', stats)

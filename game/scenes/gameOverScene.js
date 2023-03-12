@@ -1,4 +1,4 @@
-import * as SFS2X from "sfs2x-api";
+import * as SFS2X from 'sfs2x-api'
 
 export class GameOverScene extends Phaser.Scene {
 	constructor() {
@@ -40,7 +40,7 @@ export class GameOverScene extends Phaser.Scene {
 					console.log('ASDASDAS')
 					var roomVars = []
 					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
-					roomVars.push(new SFS2X.SFSRoomVariable('seed', SEED))	// TODO: gen seed
+					roomVars.push(new SFS2X.SFSRoomVariable('seed', window.seed))
 
 					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
 				}, 10000)
@@ -53,33 +53,24 @@ export class GameOverScene extends Phaser.Scene {
 				this.game.registry.set('roomId', d.room._id)
 			}
 
-			sfs.addEventListener(
-				SFS2X.SFSEvent.ROOM_ADD,
-				addRoomHandler,
-				this
-			)
+			sfs.addEventListener(SFS2X.SFSEvent.ROOM_ADD, addRoomHandler, this)
 
-			
-			sfs.addEventListener(
-				SFS2X.SFSEvent.ROOM_JOIN,
-				joinRoomHandler,
-				this
-			)
+			sfs.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, joinRoomHandler, this)
 
-			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20));
-			settings.groupId = "games";
-			settings.isPublic = true;
-			settings.isGame = true;
-			settings.maxUsers = 20;
-			settings.minPlayersToStartGame = 2;
+			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20))
+			settings.groupId = 'games'
+			settings.isPublic = true
+			settings.isGame = true
+			settings.maxUsers = 20
+			settings.minPlayersToStartGame = 2
 			settings.allowUserCountChange = true
 
-			const roomVars = [];
-			roomVars.push(new SFS2X.SFSRoomVariable("gameStarted", false));
+			const roomVars = []
+			roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', false))
 			settings.variables = roomVars
 
 			const exp = new SFS2X.MatchExpression('gameStarted', SFS2X.BoolMatch.EQUALS, false)
-			sfs.send(new SFS2X.QuickJoinOrCreateRoomRequest(exp, ["games"], settings, sfs.lastJoinedRoom));
+			sfs.send(new SFS2X.QuickJoinOrCreateRoomRequest(exp, ['games'], settings, sfs.lastJoinedRoom))
 		})
 
 		const quitButton = this.add.dom(width / 2 + 110, height / 2 + 160).createFromCache('glowingButton')

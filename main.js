@@ -7,6 +7,8 @@ import { GameUIScene } from './game/scenes/gameUIScene'
 import { MenuScene } from './game/scenes/menuScene'
 import { ShopScene } from './game/scenes/shopScene'
 
+window.seed = [...Array(5)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+
 async function getVkInfo() {
 	const vkUser = await bridge.send('VKWebAppGetUserInfo')
 	// setVkUser(vkUser)
