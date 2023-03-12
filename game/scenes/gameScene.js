@@ -33,6 +33,7 @@ export class GameScene extends Phaser.Scene {
 	preload() {
 		this.load.image('dude', 'https://labs.phaser.io/assets/sprites/phaser-dude.png')
 		this.load.image('control-box-1', 'assets/boxes/control-box-1.png')
+		this.load.image('control-box-2', 'assets/boxes/control-box-2.png')
 		this.load.image('player', 'assets/player/idle-3.png')
 		this.load.spritesheet('playerRun', 'assets/player/run/spritesheet.png', {
 			frameWidth: 71,
@@ -85,6 +86,7 @@ export class GameScene extends Phaser.Scene {
 
 		this.scene.stop('GameOverScene')
 		this.scene.stop('PreloadGameScene')
+		this.scene.stop('GameUIScene')
 		this.scene.launch('GameUIScene')
 
 		this.bgtile = this.add
@@ -235,14 +237,11 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	gameOver(props) {
-		console.log('real gameover')
-		console.log('gr', this.scene)
-
 		sfs.addEventListener(
 			SFS2X.SFSEvent.USER_EXIT_ROOM,
 			() => {
 				const stats = {
-					room_id: '0',
+					room_id: String(this.game.registry.get('roomId') || 'none'),
 					user_id: String(this.game.registry.get('vkData')?.id || 'none'),
 					score: parseInt(this.scene.scene.globalScore / 10),
 					level: parseInt(this.scene.scene.levelCounter),
@@ -262,6 +261,7 @@ export class GameScene extends Phaser.Scene {
 		this.scene.pause('GameScene')
 		this.scene.pause('GameUIScene')
 		this.scene.launch('GameOverScene')
+		this.scene.bringToTop('GameOverScene')
 	}
 
 	shutdown() {
