@@ -6,4 +6,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD [ "npx", "serve", './dist' ]
+CMD [ "npx", "serve", "./dist" ]
