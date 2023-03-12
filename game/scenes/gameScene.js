@@ -248,8 +248,11 @@ export class GameScene extends Phaser.Scene {
 			},
 			this
 		)
-
-		sfs.send(new SFS2X.LeaveRoomRequest())
+		try {
+			sfs.send(new SFS2X.LeaveRoomRequest())
+		} catch {
+			console.log('err leaving ')
+		}
 
 		this.scene.pause('GameScene')
 		this.scene.pause('GameUIScene')
