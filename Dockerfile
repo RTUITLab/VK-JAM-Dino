@@ -6,4 +6,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npx", "serve", "dist" ]
+CMD ["npx", "serve", "dist"]
