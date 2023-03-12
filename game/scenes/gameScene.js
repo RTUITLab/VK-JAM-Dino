@@ -81,6 +81,7 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	create() {
+		console.log('!!!')
 		this.initVars()
 
 		this.scene.stop('GameOverScene')
