@@ -110,6 +110,7 @@ export class MenuScene extends Phaser.Scene {
 				setTimeout(() => {
 					var roomVars = []
 					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
+					roomVars.push(new SFS2X.SFSRoomVariable('seed', SEED))	// TODO: gen seed
 
 					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
 				}, 10000)
@@ -129,8 +130,8 @@ export class MenuScene extends Phaser.Scene {
 			)
 			sfs.addEventListener(
 				SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
-				() => {
-					console.log('123123')
+				(d) => {
+					console.log(d.room._variables['seed'])	// TODO: GET SEED
 					this.scene.stop('gamePreloadScene')
 					this.scene.stop('GameScene')
 					this.scene.start('GameScene')

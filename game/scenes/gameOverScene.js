@@ -40,6 +40,7 @@ export class GameOverScene extends Phaser.Scene {
 					console.log('ASDASDAS')
 					var roomVars = []
 					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
+					roomVars.push(new SFS2X.SFSRoomVariable('seed', SEED))	// TODO: gen seed
 
 					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
 				}, 10000)
