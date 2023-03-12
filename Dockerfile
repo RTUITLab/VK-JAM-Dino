@@ -4,6 +4,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-EXPOSE 80
+EXPOSE 3000
 
-CMD [ "npx", "serve", "./dist" ]
+CMD [ "npx", "serve", "dist" ]
