@@ -59,15 +59,13 @@ export class PreloadGameScene extends Phaser.Scene {
 		// 	},
 		// })
 
-		const soloButton = this.add.dom(width / 2 - 260, height / 2 + 160).createFromCache('glowingButton')
-		// soloButton.setDepth(10)
+		var soloButton = this.add.dom(width / 2 - 260, height / 2 + 160).createFromCache('glowingButton')
 		soloButton.node.getElementsByClassName('text')[0].innerText = 'Сыграть одному'
 		soloButton.addListener('click').on('click', () => {
 			this.scene.start('GameScene') //! FIX REMOVE CALLBACKS
 		})
 
-		const quitButton = this.add.dom(width / 2 + 160, height / 2 + 160).createFromCache('glowingButton')
-		// quitButton.setDepth(10)
+		var quitButton = this.add.dom(width / 2 + 160, height / 2 + 160).createFromCache('glowingButton')
 		quitButton.node.getElementsByClassName('text')[0].innerText = 'Прервать'
 		quitButton.addListener('click').on('click', () => {
 			this.scene.get('GameScene').shutdown()

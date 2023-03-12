@@ -123,7 +123,6 @@ export class MenuScene extends Phaser.Scene {
 					sfs.addEventListener(
 						SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
 						() => {
-							this.scene.stop('gamePreloadScene')
 							this.scene.stop('GameScene')
 							this.scene.start('GameScene')
 							this.scene.bringToTop('GameScene')
