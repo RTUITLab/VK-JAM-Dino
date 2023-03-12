@@ -66,7 +66,7 @@ export class MenuScene extends Phaser.Scene {
 			this
 		)
 
-		sfs.connect('temp.rtuitlab.dev', 433, true)
+		sfs.connect('temp1.rtuitlab.dev', 443, true)
 
 		let title = this.add
 			.text(
