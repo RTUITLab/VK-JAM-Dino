@@ -1,3 +1,5 @@
+import * as SFS2X from "sfs2x-api";
+
 export class GameOverScene extends Phaser.Scene {
 	constructor() {
 		super({ key: 'GameOverScene', active: false, visible: false })
@@ -31,7 +33,20 @@ export class GameOverScene extends Phaser.Scene {
 		const restartButton = this.add.dom(width / 2 - 60, height / 2 + 160).createFromCache('glowingButton')
 		restartButton.node.getElementsByClassName('text')[0].innerText = 'Еще'
 		restartButton.addListener('click').on('click', () => {
-			this.scene.start('GameScene')
+			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20));
+			settings.groupId = "games";
+			settings.isPublic = true;
+			settings.isGame = true;
+			settings.maxUsers = 20;
+			settings.minPlayersToStartGame = 2;
+			settings.allowUserCountChange = true
+
+			const roomVars = [];
+			roomVars.push(new SFS2X.SFSRoomVariable("gameStarted", false));
+			settings.variables = roomVars
+
+			const exp = new SFS2X.MatchExpression('gameStarted', SFS2X.BoolMatch.EQUALS, false)
+			sfs.send(new SFS2X.QuickJoinOrCreateRoomRequest(exp, ["games"], settings, sfs.lastJoinedRoom));
 		})
 
 		const quitButton = this.add.dom(width / 2 + 110, height / 2 + 160).createFromCache('glowingButton')

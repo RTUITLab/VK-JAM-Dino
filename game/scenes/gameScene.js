@@ -7,6 +7,7 @@ import { Evgeny } from '../sprites/evgeny'
 import { Ground } from '../sprites/mapParts'
 import { Obstacle } from '../sprites/obstacle'
 import { PowerUp } from '../sprites/powerup'
+import * as SFS2X from "sfs2x-api";
 
 export class GameScene extends Phaser.Scene {
 	seed
@@ -81,6 +82,7 @@ export class GameScene extends Phaser.Scene {
 	create() {
 		this.initVars()
 
+		this.scene.stop('GameOverScene')
 		this.scene.launch('GameUIScene')
 
 		this.bgtile = this.add
@@ -233,16 +235,23 @@ export class GameScene extends Phaser.Scene {
 	gameOver(props) {
 		console.log('real gameover')
 		console.log('gr', this.scene)
-		const stats = {
-			room_id: String(this.game.registry.get('roomId') || 'none'),
-			user_id: String(this.game.registry.get('vkData')?.id || 'none'),
-			score: parseInt(this.scene.scene.globalScore / 10),
-			level: parseInt(this.scene.scene.levelCounter),
-			seed: this.scene.scene.seed,
-			killer: props.killer,
-		}
-		console.log('stats', stats)
-		axios.post('https://temp.rtuitlab.dev/run', stats)
+
+		sfs.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, () => {
+			const stats = {
+				room_id: '0',
+				user_id: String(this.game.registry.get('vkData')?.id || 'none'),
+				score: parseInt(this.scene.scene.globalScore / 10),
+				level: parseInt(this.scene.scene.levelCounter),
+				seed: this.scene.scene.seed,
+				killer: props.killer,
+			}
+			console.log('stats', stats)
+			axios.post('https://temp.rtuitlab.dev/run', stats)
+
+			console.log('leave')
+		}, this);
+
+		sfs.send(new SFS2X.LeaveRoomRequest());
 
 		this.scene.pause('GameScene')
 		this.scene.pause('GameUIScene')
