@@ -10,7 +10,7 @@ export class PowerUp extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.add.existing(this)
 		scene.add.existing(this)
 		this.setImmovable(true)
-		this.body.setVelocityX(-scene.globalSpeed)
+		//this.body.setVelocityX(-scene.globalSpeed)
 		// this.body.setVelocityY(0)
 		// this.body.setMass(0)
 		scene.physics.add.collider(scene.player, this, this.activate.bind(this), this.activate.bind(this))

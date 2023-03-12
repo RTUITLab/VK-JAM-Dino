@@ -1,5 +1,6 @@
 import { normalise, tick } from '../../helpers/seed'
 import { Player } from '../player'
+import { Car } from '../sprites/car'
 import { Empty } from '../sprites/empty'
 import { Evgeny } from '../sprites/evgeny'
 import { Ground } from '../sprites/mapParts'
@@ -59,6 +60,10 @@ export class GameScene extends Phaser.Scene {
 			'https://lpc.opengameart.org/sites/default/files/oga-textures/15886/ground_asphalt_old_06.png'
 		)
 		this.load.image('obstacle', 'https://labs.phaser.io/assets/games/asteroids/asteroid1.png')
+		this.load.image('v-police', 'assets/obstacles/v-police.png')
+		this.load.image('v-red', 'assets/obstacles/v-red.png')
+		this.load.image('v-truck', 'assets/obstacles/v-truck.png')
+		this.load.image('v-yellow', 'assets/obstacles/v-yellow.png')
 		this.load.audio('jungle', [
 			'https://labs.phaser.io/assets/audio/jungle.ogg',
 			'https://labs.phaser.io/assets/audio/jungle.mp3',
@@ -120,7 +125,7 @@ export class GameScene extends Phaser.Scene {
 				this.tempScore = 0
 				this.globalSpeed += Phaser.Math.GetSpeed(120, 1)
 				this.controlSpeed *= this.globalSpeed / this.currentSpeed
-				this.globalDistance *= this.globalSpeed / this.currentSpeed
+				// this.globalDistance *= 0.1 + this.currentSpeed
 			}
 		}
 		this.events.emit('addScore')
@@ -152,7 +157,10 @@ export class GameScene extends Phaser.Scene {
 		this.obstaclesPool.getChildren().forEach((obstacle) => {
 			// obstacle.angle += 2
 			obstacle.x -= this.globalSpeed * delta
-			obstacleDistance = Math.abs(this.game.config.width - obstacle.x - obstacle.displayWidth / 2) //this.game.config.width - obstacle.x - obstacle.displayWidth / 2
+			obstacleDistance = Math.min(
+				this.game.config.width - obstacle.x - obstacle.displayWidth / 2, //здесь не будет больше 990
+				obstacleDistance
+			) //this.game.config.width - obstacle.x - obstacle.displayWidth / 2
 			// minDistance = obstacleDistance //Math.min(minDistance, obstacleDistance)
 			if (obstacle.x < -obstacle.displayWidth / 2 && this.obstaclesPool.getLength() > 2) {
 				this.obstaclesPool.killAndHide(obstacle)
@@ -160,7 +168,8 @@ export class GameScene extends Phaser.Scene {
 				obstacle.body.destroy()
 			}
 		})
-		// console.log(minDistance, this.nextObstacleDistance)
+
+		// console.log(obstacleDistance, this.nextObstacleDistance)
 		// adding new platforms
 		if (obstacleDistance > this.nextObstacleDistance) {
 			this.addObstacle()
@@ -194,8 +203,17 @@ export class GameScene extends Phaser.Scene {
 				powerup.visible = true
 				this.obstaclesPool.add(powerup)
 				break
+			case 'v-police':
+			case 'v-red':
+			case 'v-truck':
+			case 'v-yellow':
+				let car = new Car(this, nextObject)
+				car.active = true
+				car.visible = true
+				this.obstaclesPool.add(car)
+				break
 		}
-		this.nextObstacleDistance = this.globalDistance //200min
+		this.nextObstacleDistance = this.globalDistance * (0.7 + this.globalSpeed) //200min
 		let nextTick = tick(this.seed)
 		this.seed = nextTick
 	}

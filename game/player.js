@@ -13,7 +13,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
 	init() {
 		this.setDepth(1)
-		this.setGravityY(-1600)
+		this.setGravityY(1600)
 		// this.setVelocity(100, 200)
 		this.setCollideWorldBounds(true)
 		this.scene.input.on('pointerdown', this.jump, this)
@@ -30,7 +30,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 			loop: 1,
 		})
 		this.anims.play('run')
-		const oval = new Phaser.Geom.Ellipse(0, 0, 100, 100)
 		// this.body.setCircle(0)
 		this.body.debugBodyColor = 0xff0000
 		this.body.debugShowBody = true
