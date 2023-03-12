@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export class MenuScene extends Phaser.Scene {
 	menuBg
 	constructor() {
@@ -9,6 +11,19 @@ export class MenuScene extends Phaser.Scene {
 	}
 
 	create() {
+		const user_id = String(this.game.registry.get('vkData')?.id || 'none')
+
+		if (user_id !== 'none') {
+			axios.get(`https://temp.rtuitlab.dev/user?uid=${user_id}`).catch(() => {
+				const user_name = String(this.game.registry.get('vkData')?.first_name || 'none')
+
+				axios.post('https://temp.rtuitlab.dev/user', {
+					"uid": user_id,
+					"name": user_name
+				})
+			})
+		}
+
 		// this.scene.scene.events.on('shutdown', this.shutdown, this)
 		const { width, height } = this.scale
 		this.menuBg = this.add.image(0, 0, 'background')
