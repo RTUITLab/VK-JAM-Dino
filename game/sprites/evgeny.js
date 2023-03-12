@@ -22,9 +22,5 @@ export class Evgeny extends Phaser.Physics.Arcade.Sprite {
 
 	gameOver() {
 		this.scene.gameOver({ killer: this.type })
-		// this.scene.scene.player.destroy() //TODO: remove double player
-		// this.scene.restart()
-		// this.scene.launch('GameOverScene')
-		// this.scene.pause()
 	}
 }

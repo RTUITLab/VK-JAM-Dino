@@ -16,6 +16,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setGravityY(1600)
 		// this.setVelocity(100, 200)
 		this.setCollideWorldBounds(true)
+
+		// disable collisions with top of world bounds
+		this.setCollideWorldBounds(false, true, false)
 		this.scene.input.on('pointerdown', this.jump, this)
 		this.runAnim = this.anims.create({
 			key: 'run',

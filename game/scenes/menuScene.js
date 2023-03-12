@@ -21,8 +21,8 @@ export class MenuScene extends Phaser.Scene {
 				const user_name = String(this.game.registry.get('vkData')?.first_name || 'none')
 
 				axios.post('https://temp.rtuitlab.dev/user', {
-					"uid": user_id,
-					"name": user_name
+					uid: user_id,
+					name: user_name,
 				})
 			})
 		}
@@ -37,9 +37,9 @@ export class MenuScene extends Phaser.Scene {
 
 		let title = this.add
 			.text(
-				this.game.renderer.width / 2 - this.game.renderer.width / 4 + 40,
+				this.game.renderer.width / 2 - this.game.renderer.width / 4 - 150,
 				this.game.renderer.height / 2 - this.game.renderer.height / 4,
-				'Dino Run',
+				'Wave Cup Royale',
 				{
 					fontSize: '80px',
 					color: '#ffffff',
@@ -65,6 +65,7 @@ export class MenuScene extends Phaser.Scene {
 			.setDepth(1)
 
 		const startButton = this.add.dom(width / 2 - 160, height / 2 + 50).createFromCache('glowingButton')
+		startButton.node.classList.add('green')
 		startButton.node.getElementsByClassName('text')[0].innerText = 'Играть'
 		startButton.addListener('click').on('click', () => {
 			this.scene.start('GameScene')

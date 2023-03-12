@@ -7,7 +7,7 @@ export class GameUIScene extends Phaser.Scene {
 
 	create() {
 		//  Our Text object to display the Score
-		var info = this.add.text(50, 50, 'Score: 0', { font: '48px Arial', fill: '#FFFFFF' })
+		var info = this.add.text(50, 50, 'Счёт: 0', { font: '48px Arial', fill: '#FFFFFF' })
 		//  Grab a reference to the Game Scene
 		var gameScene = this.scene.get('GameScene')
 
@@ -16,7 +16,7 @@ export class GameUIScene extends Phaser.Scene {
 		gameScene.events.on(
 			'addScore',
 			function () {
-				info.setText('Score: ' + parseInt(this.globalScore / 10 || 0))
+				info.setText('Счёт: ' + parseInt(this.globalScore / 10 || 0))
 			},
 			gameScene
 		)

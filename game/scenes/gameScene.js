@@ -22,6 +22,7 @@ export class GameScene extends Phaser.Scene {
 	ground
 	obstacleCounter
 	levelCounter
+	buildings
 	constructor() {
 		super({ key: 'GameScene', active: false, visible: false })
 		this.seed = [...Array(5)].map(() => Math.floor(Math.random() * 16).toString(16)).join('') //'9y3f' // random hex lenght 5
@@ -62,10 +63,8 @@ export class GameScene extends Phaser.Scene {
 		this.load.image('v-red', 'assets/obstacles/v-red.png')
 		this.load.image('v-truck', 'assets/obstacles/v-truck.png')
 		this.load.image('v-yellow', 'assets/obstacles/v-yellow.png')
-		this.load.audio('jungle', [
-			'https://labs.phaser.io/assets/audio/jungle.ogg',
-			'https://labs.phaser.io/assets/audio/jungle.mp3',
-		])
+		this.load.image('batut', 'assets/powerup.png')
+		this.load.image('buildings', 'assets/gamebg/near-buildings-bg.png')
 	}
 
 	initVars() {
@@ -83,11 +82,12 @@ export class GameScene extends Phaser.Scene {
 		this.initVars()
 
 		this.scene.launch('GameUIScene')
-		// this.scene.scene.physics.world.drawDebug = true
+
 		this.bgtile = this.add
 			.tileSprite(0, 0, this.game.config.width * 2, this.game.config.height, 'gameBackground')
 			.setDepth(-1)
 			.setScale(1.7)
+
 		this.cursors = this.input.keyboard.createCursorKeys()
 		this.player = new Player(this, this.game.config.width * 0.1, 0)
 		this.player.init()
@@ -96,31 +96,22 @@ export class GameScene extends Phaser.Scene {
 		// pool
 		this.obstaclesPool = this.add.group()
 
-		this.anims.create({
-			key: 'diamond',
-			frames: this.anims.generateFrameNames('gems', { prefix: 'diamond_', end: 15, zeroPad: 4 }),
-			repeat: -1,
-		})
-		this.anims.create({
-			key: 'prism',
-			frames: this.anims.generateFrameNames('gems', { prefix: 'prism_', end: 6, zeroPad: 4 }),
-			repeat: -1,
-		})
-		this.anims.create({
-			key: 'ruby',
-			frames: this.anims.generateFrameNames('gems', { prefix: 'ruby_', end: 6, zeroPad: 4 }),
-			repeat: -1,
-		})
-		this.anims.create({
-			key: 'square',
-			frames: this.anims.generateFrameNames('gems', { prefix: 'square_', end: 14, zeroPad: 4 }),
-			repeat: -1,
-		})
-
 		this.nextObstacleDistance = this.globalDistance //Phaser.Math.Between(300, 620) //200min
 	}
 
 	update(time, delta) {
+		if (!this.buildings) {
+			this.buildings = this.add
+				.image(this.game.config.width * 3, this.game.config.height / 2 + 50, 'buildings')
+				.setDepth(-1)
+				.setScale(1.2)
+		} else {
+			this.buildings.x -= this.globalSpeed * delta * 0.4
+			if (this.buildings.x < 0 && Math.abs(this.buildings.x) > this.game.config.width * 2) {
+				this.buildings.destroy()
+				this.buildings = null
+			}
+		}
 		// this.globalSpeed += 0.0000001
 		this.globalScore += this.globalSpeed * delta
 		this.currentSpeed = this.globalSpeed
@@ -138,7 +129,7 @@ export class GameScene extends Phaser.Scene {
 		this.events.emit('addScore')
 		const cursors = this.cursors
 		const player = this.player
-		this.bgtile.tilePositionX += 0.4
+		this.bgtile.tilePositionX += this.globalSpeed * delta * 0.2 //0.4
 		this.ground.tilePositionX += this.globalSpeed * delta
 
 		if (this.input.keyboard.addKey('R').isDown) {

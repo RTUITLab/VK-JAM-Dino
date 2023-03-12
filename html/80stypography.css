@@ -158,7 +158,9 @@
 .street-machine {
 	position: relative;
 }
-
+.green {
+	filter: hue-rotate(270deg);
+}
 .street {
 	position: relative;
 	font-family: 'Candal', sans-serif;
