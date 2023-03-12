@@ -36,6 +36,8 @@ var config = {
 	dom: {
 		createContainer: true,
 	},
+	width: 800,
+	height: 600,
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -48,7 +50,7 @@ var config = {
 		height: 1080,
 	},
 	scale: {
-		mode: Phaser.Scale.ScaleModes.FIT,
+		mode: Phaser.Scale.ScaleModes.AUTO,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
 	pixelArt: true,
