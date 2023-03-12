@@ -33,6 +33,38 @@ export class GameOverScene extends Phaser.Scene {
 		const restartButton = this.add.dom(width / 2 - 60, height / 2 + 160).createFromCache('glowingButton')
 		restartButton.node.getElementsByClassName('text')[0].innerText = 'Еще'
 		restartButton.addListener('click').on('click', () => {
+			function addRoomHandler(d) {
+				console.log('ADD', d)
+
+				setTimeout(() => {
+					console.log('ASDASDAS')
+					var roomVars = []
+					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
+
+					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
+				}, 10000)
+			}
+
+			function joinRoomHandler(d) {
+				sfs.removeEventListener(SFS2X.SFSEvent.ROOM_ADD, addRoomHandler)
+				sfs.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, joinRoomHandler)
+				console.log('JOIN room_id: ', d.room._id)
+				this.game.registry.set('roomId', d.room._id)
+			}
+
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_ADD,
+				addRoomHandler,
+				this
+			)
+
+			
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_JOIN,
+				joinRoomHandler,
+				this
+			)
+
 			const settings = new SFS2X.RoomSettings(new Date().toLocaleString().slice(0, 20));
 			settings.groupId = "games";
 			settings.isPublic = true;

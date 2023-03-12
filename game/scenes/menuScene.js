@@ -104,36 +104,43 @@ export class MenuScene extends Phaser.Scene {
 		startButton.node.classList.add('green')
 		startButton.node.getElementsByClassName('text')[0].innerText = 'Играть'
 		startButton.addListener('click').on('click', () => {
+			function addRoomHandler(d) {
+				console.log('ADD0', d)
+
+				setTimeout(() => {
+					var roomVars = []
+					roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
+
+					sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
+				}, 10000)
+			}
+
+			function joinRoomHandler(d) {
+				sfs.removeEventListener(SFS2X.SFSEvent.ROOM_ADD, addRoomHandler)
+				sfs.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, joinRoomHandler)
+				console.log('JOIN room_id: ', d.room._id)
+				this.game.registry.set('roomId', d.room._id)
+			}
+
 			sfs.addEventListener(
 				SFS2X.SFSEvent.ROOM_ADD,
-				(d) => {
-					console.log('ADD', d)
-					setTimeout(() => {
-						var roomVars = []
-						roomVars.push(new SFS2X.SFSRoomVariable('gameStarted', true))
-
-						sfs.send(new SFS2X.SetRoomVariablesRequest(roomVars))
-					}, 10000)
+				addRoomHandler,
+				this
+			)
+			sfs.addEventListener(
+				SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
+				() => {
+					console.log('123123')
+					this.scene.stop('gamePreloadScene')
+					this.scene.stop('GameScene')
+					this.scene.start('GameScene')
+					this.scene.bringToTop('GameScene')
 				},
 				this
 			)
 			sfs.addEventListener(
 				SFS2X.SFSEvent.ROOM_JOIN,
-				(d) => {
-					sfs.addEventListener(
-						SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
-						() => {
-							this.scene.stop('gamePreloadScene')
-							this.scene.stop('GameScene')
-							this.scene.start('GameScene')
-							this.scene.bringToTop('GameScene')
-						},
-						this
-					)
-					console.log('JOIN room_id: ', d.room._id)
-					this.game.registry.set('roomId', d.room._id)
-					// Мы вошли в комнату
-				},
+				joinRoomHandler,
 				this
 			)
 			sfs.addEventListener(
