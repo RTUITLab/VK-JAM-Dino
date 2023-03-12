@@ -7,8 +7,7 @@ export class GameUIScene extends Phaser.Scene {
 
 	create() {
 		//  Our Text object to display the Score
-		var info = this.add.text(10, 10, 'Score: 0', { font: '48px Arial', fill: '#000000', color: 'white' })
-
+		var info = this.add.text(10, 70, 'Score: 0', { font: '48px Arial', fill: '#FFFFFF' })
 		//  Grab a reference to the Game Scene
 		var gameScene = this.scene.get('GameScene')
 
