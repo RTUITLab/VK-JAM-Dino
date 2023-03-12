@@ -21,6 +21,7 @@ jobs:
         npm ci
         npm run build
         cp -r ./html ./dist/
+        cp -r ./assets ./dist/assets
         
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag parker1331/vk-jam-front:latest
