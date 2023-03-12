@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { normalise, tick } from '../../helpers/seed'
 import { Player } from '../player'
 import { Car } from '../sprites/car'
@@ -236,6 +237,25 @@ export class GameScene extends Phaser.Scene {
 		this.nextObstacleDistance = this.globalDistance * (0.7 + this.globalSpeed) //200min
 		let nextTick = tick(this.seed)
 		this.seed = nextTick
+	}
+
+	gameOver(props) {
+		console.log('real gameover')
+		console.log('gr', this.scene)
+		const stats = {
+			roomid: 0,
+			userid: String(game.registry.get('vkData')?.detail?.data?.id),
+			score: parseInt(this.scene.scene.globalScore / 10),
+			level: parseInt(this.scene.scene.levelCounter),
+			seed: this.scene.scene.seed,
+			killer: props.killer,
+		}
+		console.log('stats', stats)
+		axios.post('https://temp.rtuitlab.dev/run', stats)
+
+		this.scene.pause('GameScene')
+		this.scene.pause('GameUIScene')
+		this.scene.launch('GameOverScene')
 	}
 
 	shutdown() {

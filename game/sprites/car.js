@@ -30,6 +30,7 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
 		let obstacleY = scene.sys.game.config.height - scene.sys.game.config.height * 0.2 - carHeight - bonus
 		if (params?.flying) obstacleY -= scene.sys.game.config.height / 3
 		super(scene, obstacleX, obstacleY, type)
+		this.type = type
 		this.displayHeight = carHeight
 		this.displayWidth = carWidth
 		this.setDepth(1)
@@ -38,7 +39,7 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.add.existing(this)
 		scene.add.existing(this)
 		this.setImmovable(true)
-		scene.physics.add.collider(scene.player, this, this.gameOver.bind(scene), this.gameOver.bind(scene))
+		scene.physics.add.collider(scene.player, this, this.gameOver.bind(this), this.gameOver.bind(this))
 		// Set the hit area
 
 		this.setSize(carWidth * 0.7, carHeight * 0.45)
@@ -47,10 +48,11 @@ export class Car extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	gameOver() {
+		this.scene.gameOver({ killer: this.type })
 		// this.scene.scene.player.destroy() //TODO: remove double player
 		// this.scene.restart()
-		this.scene.pause('GameScene')
-		this.scene.pause('GameUIScene')
-		this.scene.launch('GameOverScene')
+		// this.scene.pause('GameScene')
+		// this.scene.pause('GameUIScene')
+		// this.scene.launch('GameOverScene')
 	}
 }

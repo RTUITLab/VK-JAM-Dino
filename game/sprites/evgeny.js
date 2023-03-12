@@ -3,6 +3,7 @@ export class Evgeny extends Phaser.Physics.Arcade.Sprite {
 		let obstacleX = scene.sys.game.config.width
 		let obstacleY = scene.sys.game.config.height - scene.sys.game.config.height * 0.2 - 100
 		super(scene, obstacleX, obstacleY, 'obstacle')
+		this.type = 'evgeny'
 		this.displayHeight = 200
 		this.displayWidth = 100
 		this.setDepth(1)
@@ -11,7 +12,7 @@ export class Evgeny extends Phaser.Physics.Arcade.Sprite {
 		scene.add.existing(this)
 		this.setImmovable(true)
 		// this.body.setVelocityX(-scene.globalSpeed)
-		scene.physics.add.collider(scene.player, this, this.gameOver.bind(scene), this.gameOver.bind(scene))
+		scene.physics.add.collider(scene.player, this, this.gameOver.bind(this), this.gameOver.bind(this))
 		// Set the hit area
 		const oval = new Phaser.Geom.Ellipse(5, 5, 25, 25)
 		this.body.setCircle(oval.width / 2, oval.x, oval.y)
@@ -20,9 +21,10 @@ export class Evgeny extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	gameOver() {
+		this.scene.gameOver({ killer: this.type })
 		// this.scene.scene.player.destroy() //TODO: remove double player
 		// this.scene.restart()
-		this.scene.launch('GameOverScene')
-		this.scene.pause()
+		// this.scene.launch('GameOverScene')
+		// this.scene.pause()
 	}
 }
