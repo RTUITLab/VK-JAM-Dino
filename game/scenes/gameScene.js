@@ -42,6 +42,7 @@ export class GameScene extends Phaser.Scene {
 	}
 
 	create() {
+		this.globalScore = 0 //reset on restart
 		this.scene.launch('GameUIScene')
 		// this.scene.scene.physics.world.drawDebug = true
 		this.bgtile = this.add
