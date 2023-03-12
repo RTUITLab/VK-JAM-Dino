@@ -101,8 +101,11 @@ export class MenuScene extends Phaser.Scene {
 				}, 10000)
 			}, this);
 			sfs.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, (d) => {
-				sfs.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, () => {
-					this.scene.start('GameScene')
+				sfs.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, (d) => {
+					if (d.changedVars[0] === "gameStarted") {
+						this.scene.stop('GameScene')
+						this.scene.start('GameScene')
+					}
 				}, this);
 				console.log('JOIN room_id: ', d.room._id)
 				// Мы вошли в комнату
