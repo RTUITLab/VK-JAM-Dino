@@ -15,17 +15,12 @@ export class Obstacle extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.add.collider(scene.player, this, this.gameOver.bind(this))
 		// Set the hit area
 		const oval = new Phaser.Geom.Ellipse(5, 5, 25, 25)
-		this.body.setCircle(oval.width / 2, oval.x, oval.y)
+		this.body.setCircle(oval.width / 2, oval.x - 5, oval.y - 5)
 		this.body.debugBodyColor = 0xff0000
 		this.body.debugShowBody = true
 	}
 
 	gameOver() {
 		this.scene.gameOver({ killer: this.type })
-		// this.scene.scene.player.destroy() //TODO: remove double player
-		// this.scene.restart()
-		// this.scene.pause('GameScene')
-		// this.scene.pause('GameUIScene')
-		// this.scene.launch('GameOverScene')
 	}
 }

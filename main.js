@@ -6,8 +6,6 @@ import { GameUIScene } from './game/scenes/gameUIScene'
 import { MenuScene } from './game/scenes/menuScene'
 import { ShopScene } from './game/scenes/shopScene'
 
-// import button from './html/glowingButton.html'
-// button
 async function getVkInfo() {
 	const vkUser = await bridge.send('VKWebAppGetUserInfo')
 	// setVkUser(vkUser)
