@@ -82,10 +82,7 @@ export class GameScene extends Phaser.Scene {
 
 	update(time, delta) {
 		this.globalScore += this.globalSpeed * delta
-		console.log(this.scene.get('GameUIScene'))
-		if (this.scene.get('GameUIScene')) {
-			this.events.emit('addScore')
-		}
+		this.events.emit('addScore')
 		const cursors = this.cursors
 		const player = this.player
 		this.bgtile.tilePositionX += 0.4
@@ -134,7 +131,7 @@ export class GameScene extends Phaser.Scene {
 			case 'empty':
 				let empty = new Empty(this)
 				empty.active = true
-				empty.visible = true
+				empty.visible = false
 				this.obstaclesPool.add(empty)
 				break
 			case 'evgeny':

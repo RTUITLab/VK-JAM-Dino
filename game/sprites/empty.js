@@ -2,7 +2,7 @@ export class Empty extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene) {
 		let obstacleX = scene.sys.game.config.width
 		let obstacleY = scene.sys.game.config.height - scene.sys.game.config.height * 0.2 - 50
-		super(scene, obstacleX, obstacleY, '')
+		super(scene, obstacleX, obstacleY, null)
 		this.displayHeight = 100
 		this.displayWidth = 100
 		this.setDepth(1)

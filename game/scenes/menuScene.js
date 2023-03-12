@@ -7,7 +7,6 @@ export class MenuScene extends Phaser.Scene {
 	preload() {
 		this.load.image('background', 'https://labs.phaser.io/assets/skies/space1.png')
 		this.load.html('hi', '../../html/startGame.html')
-		this.load.css('80s', 'https://labs.phaser.io/assets/loader-tests/80stypography.css')
 	}
 
 	create() {
@@ -20,45 +19,36 @@ export class MenuScene extends Phaser.Scene {
 		this.menuBg.displayHeight = height
 
 		// кнопка В забег!
-		const playButtonBorderWidth = 4
-		const playButtonPadding = 8
-		const playButton = this.add
-			.dom(0, 0, 'h1', 'background-color: lime; width: 220px; height: 100px; font: 48px Arial', 'В забег!')
-			.setDepth(22)
-
-		const playButton2 = this.add
-			.dom(200, 200, 'h1', { height: '200px', width: '200px', color: 'white', fontSize: '40px' }, 'В забег!')
-			.setClassName('chrome')
-
-		const test = this.add.dom(
-			100,
-			100,
-			'div',
-			'background-color: rgba(255, 255, 0, 0.5); width: 300px; height: 200px; font: 48px Arial; font-weight: bold',
-			'hellelelel'
-		)
-		test.node.style.width = '200px' // set the width of the element
-		test.node.style.height = '100px' // set the height of the element
-		test.setOrigin(0.5)
-		test.setScale(2)
-		test.setDepth(10)
-
-		console.log(test)
-
-		var h1 = this.add.dom(450, 100, 'h1', null, 'CHROME')
-
+		const h1 = this.add.dom(width * 0.2, height * 0.1, 'h1', 'width:300px;', 'В забег!')
+		// const form = this.add.dom(400, 300).createFromCache('hi')
 		h1.setClassName('chrome')
-		h1.setDepth(22)
+		h1.setOrigin(0)
+		h1.setDepth(1)
+		h1.addListener('click').on('click', () => {
+			this.scene.start('GameScene', { level: 1 })
+			this.scene.sleep('MenuScene')
+		})
 
-		var h2 = this.add.dom(570, 180, 'h2', null, 'Dreams')
-
-		h2.setClassName('dreams')
-		h2.setAngle(-15)
+		const teamMode = this.add.dom(width * 0.2, height * 0.3, 'h2', 'width:20px;font-size:2em;', 'Team')
+		const soloMode = this.add.dom(width * 0.3, height * 0.3, 'h2', 'width:20px;font-size:2em;', 'Solo')
+		const battleMode = this.add.dom(
+			width * 0.4,
+			height * 0.3,
+			'h2',
+			'width:20px;font-size:2em;',
+			'Battle royal'
+		)
+		const modeButtons = [teamMode, soloMode, battleMode]
+		modeButtons.forEach((e) => {
+			e.setClassName('dreams')
+			e.setAngle(-15)
+			e.setOrigin(0)
+		})
 
 		this.tweens.add({
-			targets: [h1, h2],
-			y: 500,
-			duration: 3000,
+			targets: modeButtons,
+			y: (button) => button.y + (Math.random() < 0.5 ? -1 : 1) * Phaser.Math.Between(2, 5),
+			duration: 2000,
 			ease: 'Sine.easeInOut',
 			loop: -1,
 			yoyo: true,
@@ -96,13 +86,13 @@ export class MenuScene extends Phaser.Scene {
 		// 	playButtonBounds.width + playButtonPadding * 2 + playButtonBorderWidth,
 		// 	playButtonBounds.height + playButtonPadding * 2 + playButtonBorderWidth
 		// )
-		const playButtonOld = this.add
-			.text(width * 0.2, height * 0.3, 'В забег!', { fontSize: '5em', fill: '#fff' })
-			.setInteractive()
-			.on('pointerdown', () => {
-				this.scene.start('GameScene', { level: 1 })
-				this.scene.sleep('MenuScene')
-			})
+		// const playButtonOld = this.add
+		// 	.text(width * 0.2, height * 0.3, 'В забег!', { fontSize: '5em', fill: '#fff' })
+		// 	.setInteractive()
+		// 	.on('pointerdown', () => {
+		// 		this.scene.start('GameScene', { level: 1 })
+		// 		this.scene.sleep('MenuScene')
+		// 	})
 
 		const shopButton = this.add
 			.text(width * 0.2, height * 0.45, 'В магазин', { fontSize: '4em', fill: '#fff' })

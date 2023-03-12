@@ -9,6 +9,7 @@ bridge.send('VKWebAppInit', {})
 
 var config = {
 	type: Phaser.AUTO,
+	parent: 'phaser',
 	dom: {
 		createContainer: true,
 	},
@@ -27,7 +28,7 @@ var config = {
 		mode: Phaser.Scale.ScaleModes.SHOW_ALL,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
-	pixelArt: true, //remove
+	// pixelArt: true, //remove
 	scene: [MenuScene, GameScene, GameUIScene, ShopScene, GameOverScene],
 }
 
