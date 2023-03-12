@@ -1,12 +1,11 @@
 export class MenuScene extends Phaser.Scene {
 	menuBg
 	constructor() {
-		super({ key: 'MenuScene', active: false, visible: false })
+		super({ key: 'MenuScene', active: true, visible: true })
 	}
 
 	preload() {
 		this.load.image('background', 'https://labs.phaser.io/assets/skies/space1.png')
-		this.load.html('hi', '../../html/startGame.html')
 	}
 
 	create() {
@@ -20,7 +19,7 @@ export class MenuScene extends Phaser.Scene {
 
 		// кнопка В забег!
 		const h1 = this.add.dom(width * 0.2, height * 0.1, 'h1', 'width:300px;', 'В забег!')
-		// const form = this.add.dom(400, 300).createFromCache('hi')
+
 		h1.setClassName('chrome')
 		h1.setOrigin(0)
 		h1.setDepth(1)

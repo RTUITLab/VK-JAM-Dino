@@ -162,7 +162,7 @@
 .street {
 	position: relative;
 	font-family: 'Candal', sans-serif;
-	font-size: 180px;
+	font-size: 4em;
 	font-style: italic;
 	-webkit-text-stroke: 0.1px #ed2121;
 	color: #fff;

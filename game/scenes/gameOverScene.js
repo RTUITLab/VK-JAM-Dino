@@ -5,6 +5,7 @@ export class GameOverScene extends Phaser.Scene {
 
 	preload() {
 		this.load.html('glowingButton', '/html/glowingButton.html')
+		this.load.image('gameover', '/assets/gameover.png')
 	}
 
 	create() {
@@ -18,21 +19,22 @@ export class GameOverScene extends Phaser.Scene {
 
 		// Create the game over text
 		const gameOverText = this.add
-			.text(width / 2, height / 2 - 100, 'Конец', {
+			.text(width / 2 - 24, height / 2 - 200, 'Конец', {
 				fontFamily: 'Arial',
 				fontSize: '48px',
 				color: '#ffffff',
 			})
-			.setOrigin(0.5)
 			.setDepth(11)
 
-		const restartButton = this.add.dom(width / 2 - 50, height / 2 + 50).createFromCache('glowingButton')
+		const gameover = this.add.image(width / 2 + 40, height / 2, 'gameover')
+
+		const restartButton = this.add.dom(width / 2 - 60, height / 2 + 160).createFromCache('glowingButton')
 		restartButton.node.getElementsByClassName('text')[0].innerText = 'Еще'
 		restartButton.addListener('click').on('click', () => {
 			this.scene.start('GameScene')
 		})
 
-		const quitButton = this.add.dom(width / 2 + 100, height / 2 + 50).createFromCache('glowingButton')
+		const quitButton = this.add.dom(width / 2 + 110, height / 2 + 160).createFromCache('glowingButton')
 		quitButton.node.getElementsByClassName('text')[0].innerText = 'В меню'
 		quitButton.addListener('click').on('click', () => {
 			this.scene.get('GameScene').shutdown()

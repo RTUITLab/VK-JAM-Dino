@@ -22,7 +22,7 @@ export class GameScene extends Phaser.Scene {
 	obstacleCounter
 	levelCounter
 	constructor() {
-		super({ key: 'GameScene', active: true, visible: true })
+		super({ key: 'GameScene', active: false, visible: false })
 		this.seed = '9b3f' // random hex lenght 5
 		this.initVars()
 	}
@@ -220,6 +220,13 @@ export class GameScene extends Phaser.Scene {
 			case 'v-police':
 			case 'v-red':
 			case 'v-yellow':
+				if (this.levelCounter < 1) {
+					let car = new Car(this, nextObject, { flying: true })
+					car.active = true
+					car.visible = true
+					this.obstaclesPool.add(car)
+					break
+				}
 				let car = new Car(this, nextObject)
 				car.active = true
 				car.visible = true
