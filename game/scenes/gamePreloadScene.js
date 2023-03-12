@@ -1,3 +1,5 @@
+import * as SFS2X from 'sfs2x-api'
+
 export class PreloadGameScene extends Phaser.Scene {
 	constructor() {
 		super('PreloadGameScene')
@@ -62,6 +64,7 @@ export class PreloadGameScene extends Phaser.Scene {
 		var soloButton = this.add.dom(width / 2 - 260, height / 2 + 160).createFromCache('glowingButton')
 		soloButton.node.getElementsByClassName('text')[0].innerText = 'Сыграть одному'
 		soloButton.addListener('click').on('click', () => {
+			sfs.send(new SFS2X.LeaveRoomRequest())
 			this.scene.start('GameScene') //! FIX REMOVE CALLBACKS
 		})
 
